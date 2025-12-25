@@ -1,0 +1,158 @@
+✅ Análise Completa: Endpoints XHR do Flashscore
+Consegui investigar o Flashscore.pt e documentar os endpoints internos com base na análise da página + pesquisa sobre a estrutura da API.
+​
+
+🔍 1. ENDPOINTS XHR PRINCIPAIS
+A) Feed de Jogos (Lista de Jogos)
+texto
+URL Base: https://d.flashscore.com/x/feed/
+Método: GET ou POST
+Parâmetros típicos:
+
+_: carimbo de data/hora (ex: 1734359415234)
+
+tzOffset: deslocamento de fuso horário (ex: 0para WET)
+
+sport: código do esporte (ex: 1= futebol)
+
+Cabeçalhos obrigatórios:
+​
+
+texto
+X-Fsign: SW9D1eZo
+User-Agent: Mozilla/5.0...
+Formato de resposta:
+
+Os dados vêm codificados/ofuscados (não é JSON puro)
+
+Flashscore usa um formato proprietário tipochave¬valor~separado
+
+É necessário analisar a resposta (remover caracteres especiais inseridos)
+​
+
+B) Detalhes do Jogo Específico
+texto
+URL: https://d.flashscore.com/x/feed/df_st_1_{MATCH_ID}
+Método: GET
+{MATCH_ID}: ID do jogo (ex: QuD5Zho1para Estoril vs Braga)
+
+C) Estatísticas do Jogo
+texto
+URL: https://d.flashscore.com/x/feed/df_sui_1_{MATCH_ID}
+Método: GET
+🌐 2. WEBSOCKET (Dados Ao Vivo)
+WebSocket de ponto final:
+
+texto
+wss://push.flashscore.com/
+Funcionamento:
+
+Abra o WebSocket
+
+Envia mensagem de "subscribe" com IDs dos jogos
+
+Recebe atualizações em tempo real (gols, cartões, minuto, etc.)
+
+Estrutura da mensagem (aproximada):
+
+json
+{
+  "type": "subscribe",
+  "match_ids": ["QuD5Zho1", "hb7WMF1e", ...]
+}
+📋 3. COMO USAR NO N8N
+Fluxo de trabalho 1: Jogos do Dia
+texto
+┌─────────────┐
+│ Cron Daily  │
+│  08:00      │
+└──────┬──────┘
+       │
+       v
+┌──────────────────────┐
+│ HTTP Request         │
+│ GET /x/feed/...      │
+│ Headers: X-Fsign     │
+└──────┬───────────────┘
+       │
+       v
+┌──────────────────────┐
+│ Function Node        │
+│ Parse response       │
+│ (remover ofuscação)  │
+└──────┬───────────────┘
+       │
+       v
+┌──────────────────────┐
+│ Loop over jogos      │
+│ Extrair: ID, times,  │
+│ horário, liga        │
+└──────┬───────────────┘
+       │
+       v
+┌──────────────────────┐
+│ Supabase Insert      │
+│ Tabela: jogos        │
+└──────────────────────┘
+Fluxo de trabalho 2: Ao Vivo (Polling)
+texto
+┌─────────────┐
+│ Cron 30s    │
+└──────┬──────┘
+       │
+       v
+┌──────────────────────┐
+│ Supabase Read        │
+│ SELECT jogos LIVE    │
+└──────┬───────────────┘
+       │
+       v
+┌──────────────────────┐
+│ Loop: HTTP Request   │
+│ /df_st_1_{match_id}  │
+└──────┬───────────────┘
+       │
+       v
+┌──────────────────────┐
+│ Function: Parse      │
+│ Extrair placar,      │
+│ minuto, eventos      │
+└──────┬───────────────┘
+       │
+       v
+┌──────────────────────┐
+│ Supabase Update      │
+│ WHERE id=match_id    │
+└──────────────────────┘
+⚠️ 4. DESAFIOS E SOLUÇÕES
+Desafio	…
+Resposta de Uscado	Criar função no n8n para limpar caracteres especiais antes de analisar
+​
+Cabeçalho X-Fsign	Adicionar cabeçalho fixo SW9D1eZoem todas as solicitações
+​
+Limitação de taxa	Usar polling de 30-60s para live (não mais frequente)
+Complexo WebSocket	Para n8n, melhor usar polling de endpoints XHR que WebSocket
+IDs dinâmicos	Guardar match_idao capturar lista inicial de jogos
+💡 5. EXEMPLO PRÁTICO: cURL para Testar
+bash
+curl -X GET \
+  'https://d.flashscore.com/x/feed/f_1_0_pt_1' \
+  -H 'X-Fsign: SW9D1eZo' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36' \
+  -H 'Accept: */*' \
+  -H 'Referer: https://www.flashscore.pt/'
+Resposta (exemplo ofuscado):
+
+texto
+¬AA÷QuD5Zho1¬AE÷Estoril¬WB÷W8mj7MDD¬WM÷BRA¬AE÷Braga¬...
+Após a análise sintática:
+
+json
+{
+  "match_id": "QuD5Zho1",
+  "home_team": "Estoril",
+  "away_team": "Braga",
+  "status": "not_started",
+  "date": "19.12.2025",
+  "time": "20:15"
+}

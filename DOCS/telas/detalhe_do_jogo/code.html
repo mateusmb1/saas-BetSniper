@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detalhe do Jogo</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee79",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102217",
+                        "surface-dark": "#1c2e24", // Slightly lighter for cards
+                        "surface-darker": "#15261d",
+                        "text-secondary": "#9db9a8",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "1.5rem", 
+                        "xl": "2rem", 
+                        "2xl": "2.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-black">
+<div class="relative mx-auto flex h-full min-h-screen w-full max-w-md flex-col overflow-x-hidden shadow-2xl">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between bg-background-light/80 dark:bg-background-dark/80 px-4 py-4 backdrop-blur-md">
+<button class="flex size-10 items-center justify-center rounded-full bg-white/10 text-slate-900 dark:text-white hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-base font-bold tracking-tight">Detalhe da Partida</h1>
+<button class="flex size-10 items-center justify-center rounded-full bg-white/10 text-slate-900 dark:text-white hover:bg-white/20 transition-colors">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+</header>
+<!-- Match Header / Profile Header -->
+<div class="flex flex-col items-center px-4 pt-2 pb-6">
+<!-- League Info -->
+<div class="mb-6 flex items-center gap-2 rounded-full bg-surface-dark px-3 py-1 border border-white/5">
+<img alt="Premier League Logo" class="h-4 w-auto opacity-80" data-alt="Premier League logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKNPUyfIFAy6ORaaBZF9TMrgBUaodrQCoJgW0p2fLmiOQ4A5ETHTAmLvjI0SBH4HNaKniqjlRG9fT3rmOtgCxAwgULIGeL7WfaY3siuy8sCcW3UvBiqVJxhXALTP50i7KwoaIS_6GilN5bXnsmH9F_RqUGcUtRAAHGcFZ_82v_pparoR1Kd7Wob7CN4jl4nug-nZPVcczjS0gk3wQnZSrFyg81JPgXUlG8GKBa20FB2MpSCBALnbL4fGGwVaOEkYk0fepcx1RKuzEQ"/>
+<span class="text-xs font-medium text-text-secondary uppercase tracking-wider">Premier League</span>
+</div>
+<!-- Teams Scoreboard -->
+<div class="flex w-full items-center justify-between gap-4">
+<!-- Home Team -->
+<div class="flex flex-1 flex-col items-center gap-3">
+<div class="relative">
+<div class="flex h-20 w-20 items-center justify-center rounded-full bg-surface-dark border border-white/5 shadow-lg p-4">
+<img alt="Arsenal Logo" class="h-full w-full object-contain" data-alt="Arsenal team logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi4Lj5hWF0bp0GM543laSVaQqhQLGwC0VgGfHbYYowaYv34k00DhADCA39AWkvug5HPpw3omA3MggVBpzd6XpfChsMl0vYfHs0OR_A9yk8-Jn9k1kZx6i8l9dkc-mLQHdNjqQ2NxooidmdG-01YunKVAVBkJ3ovHWAAw-0FzB60tGwlUb58WhfdOzSpOQM_2EnorzE0e7iYZuKNWVhHEXKXpwkdm-XkGDbpJUpx85oj2hWCit0HJMDR9cIkNiOFZNPCOg2UG9zs7vt"/>
+</div>
+</div>
+<span class="text-center font-bold text-lg leading-tight">Arsenal</span>
+</div>
+<!-- VS / Time -->
+<div class="flex flex-col items-center gap-1">
+<span class="text-3xl font-black tracking-tighter text-slate-200 dark:text-white">VS</span>
+<span class="text-xs font-medium text-primary">16:00</span>
+<div class="mt-2 flex h-6 items-center justify-center rounded-full bg-primary/20 px-3">
+<span class="text-[10px] font-bold uppercase tracking-wide text-primary">Ao Vivo</span>
+</div>
+</div>
+<!-- Away Team -->
+<div class="flex flex-1 flex-col items-center gap-3">
+<div class="relative">
+<div class="flex h-20 w-20 items-center justify-center rounded-full bg-surface-dark border border-white/5 shadow-lg p-4">
+<img alt="Chelsea Logo" class="h-full w-full object-contain" data-alt="Chelsea team logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU55dOROUAeV-D-E9ogfTVU4_y_74v5q1ghXR5keHNKrYJQvOSW7I2bm6I1tNzOsG42pwxOerU2qMbhRaYqXSzVwUEey-C0050wzHtijsPs-gsTSppHjaa9zx__LI_q1yv61_UQSd4QEut4k1eoRIpX_MsU5hhUe4yfE1GhMCQ81OJ63q5NqF1LrNGj6KPDjZDecsvuzWx6_fxpdGJG5NgBdqETS_svYd82gJhCqptSsrI3ca4-YPpkHY1-D-51i6fJpnaGBndUBFB"/>
+</div>
+</div>
+<span class="text-center font-bold text-lg leading-tight">Chelsea</span>
+</div>
+</div>
+</div>
+<!-- Section: Análise IA -->
+<section class="px-4 py-2">
+<div class="flex items-center gap-2 pb-4">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<h3 class="text-lg font-bold">Análise IA</h3>
+</div>
+<!-- Primary Recommendation Card -->
+<div class="relative mb-4 overflow-hidden rounded-xl bg-gradient-to-br from-surface-dark to-surface-darker p-5 shadow-lg border border-white/5">
+<div class="absolute right-0 top-0 h-32 w-32 -translate-y-8 translate-x-8 rounded-full bg-primary/5 blur-3xl"></div>
+<div class="relative z-10">
+<div class="mb-4 flex items-center justify-between">
+<p class="text-sm font-medium text-text-secondary">Mercado Recomendado</p>
+<span class="material-symbols-outlined text-primary/50 text-xl">verified</span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<h2 class="text-3xl font-bold text-white tracking-tight">Over 2.5 Gols</h2>
+<p class="mt-1 text-xs text-text-secondary">Alta probabilidade de gols combinados</p>
+</div>
+<div class="text-right">
+<div class="flex items-center justify-end gap-1 text-primary">
+<span class="material-symbols-outlined text-base">trending_up</span>
+<span class="text-lg font-bold">1.85</span>
+</div>
+<span class="text-[10px] text-text-secondary">Odd Atual</span>
+</div>
+</div>
+<!-- Progress Bar within card -->
+<div class="mt-5">
+<div class="flex justify-between text-xs font-medium mb-1.5">
+<span class="text-text-secondary">Confiança do Modelo</span>
+<span class="text-primary">87%</span>
+</div>
+<div class="h-2 w-full overflow-hidden rounded-full bg-black/40">
+<div class="h-full rounded-full bg-primary shadow-[0_0_10px_rgba(43,238,121,0.5)]" style="width: 87%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Stats Grid -->
+<div class="grid grid-cols-3 gap-3">
+<!-- Probabilidade Real -->
+<div class="flex flex-col items-center rounded-xl bg-surface-dark p-3 border border-white/5">
+<div class="mb-2 flex size-10 items-center justify-center rounded-full bg-blue-500/10 text-blue-400">
+<span class="material-symbols-outlined text-xl">donut_large</span>
+</div>
+<span class="text-xl font-bold text-white">72%</span>
+<span class="text-[10px] font-medium text-text-secondary text-center">Probabilidade<br/>Real</span>
+</div>
+<!-- Índice de Valor -->
+<div class="flex flex-col items-center rounded-xl bg-surface-dark p-3 border border-white/5">
+<div class="mb-2 flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-xl">add_chart</span>
+</div>
+<span class="text-xl font-bold text-primary">+12%</span>
+<span class="text-[10px] font-medium text-text-secondary text-center">Índice de<br/>Valor (EV)</span>
+</div>
+<!-- Score IA -->
+<div class="flex flex-col items-center rounded-xl bg-surface-dark p-3 border border-white/5">
+<div class="mb-2 flex size-10 items-center justify-center rounded-full bg-purple-500/10 text-purple-400">
+<span class="material-symbols-outlined text-xl">star</span>
+</div>
+<span class="text-xl font-bold text-white">8.5</span>
+<span class="text-[10px] font-medium text-text-secondary text-center">Score<br/>Geral</span>
+</div>
+</div>
+</section>
+<!-- Divider -->
+<div class="my-6 h-px w-full bg-white/5 px-4"></div>
+<!-- Section: Dados do Jogo -->
+<section class="px-4 pb-24">
+<h3 class="mb-4 text-lg font-bold">Dados do Jogo</h3>
+<!-- Tabs/Chips -->
+<div class="mb-6 flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+<button class="whitespace-nowrap rounded-full bg-white text-black px-4 py-2 text-sm font-bold shadow-md">Geral</button>
+<button class="whitespace-nowrap rounded-full bg-surface-dark px-4 py-2 text-sm font-medium text-text-secondary border border-white/5 hover:bg-white/5">H2H</button>
+<button class="whitespace-nowrap rounded-full bg-surface-dark px-4 py-2 text-sm font-medium text-text-secondary border border-white/5 hover:bg-white/5">Classificação</button>
+</div>
+<!-- Stats Rows -->
+<div class="flex flex-col gap-6">
+<!-- Average Goals -->
+<div class="rounded-xl bg-surface-dark p-4 border border-white/5">
+<div class="mb-4 flex items-center justify-between">
+<h4 class="text-sm font-bold text-white">Média de Gols</h4>
+<span class="text-xs text-text-secondary">Últimos 5 jogos</span>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex flex-1 flex-col items-center gap-1">
+<span class="text-2xl font-bold text-white">2.1</span>
+<span class="text-xs font-medium text-text-secondary">Arsenal</span>
+</div>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex flex-1 flex-col items-center gap-1">
+<span class="text-2xl font-bold text-white">1.4</span>
+<span class="text-xs font-medium text-text-secondary">Chelsea</span>
+</div>
+</div>
+</div>
+<!-- Offensive Strength Comparison -->
+<div>
+<div class="mb-3 flex items-center justify-between text-sm">
+<span class="font-medium text-text-secondary">Força Ofensiva</span>
+</div>
+<!-- Arsenal Bar -->
+<div class="mb-2 flex items-center gap-3">
+<span class="w-8 text-xs font-bold text-text-secondary">ARS</span>
+<div class="relative h-2.5 flex-1 overflow-hidden rounded-full bg-surface-darker">
+<div class="absolute left-0 top-0 h-full rounded-full bg-primary" style="width: 85%"></div>
+</div>
+<span class="w-6 text-right text-xs font-bold text-primary">85</span>
+</div>
+<!-- Chelsea Bar -->
+<div class="flex items-center gap-3">
+<span class="w-8 text-xs font-bold text-text-secondary">CHE</span>
+<div class="relative h-2.5 flex-1 overflow-hidden rounded-full bg-surface-darker">
+<div class="absolute left-0 top-0 h-full rounded-full bg-text-secondary" style="width: 62%"></div>
+</div>
+<span class="w-6 text-right text-xs font-bold text-text-secondary">62</span>
+</div>
+</div>
+<!-- Defensive Strength Comparison -->
+<div>
+<div class="mb-3 flex items-center justify-between text-sm">
+<span class="font-medium text-text-secondary">Força Defensiva</span>
+</div>
+<!-- Arsenal Bar -->
+<div class="mb-2 flex items-center gap-3">
+<span class="w-8 text-xs font-bold text-text-secondary">ARS</span>
+<div class="relative h-2.5 flex-1 overflow-hidden rounded-full bg-surface-darker">
+<div class="absolute left-0 top-0 h-full rounded-full bg-blue-400" style="width: 78%"></div>
+</div>
+<span class="w-6 text-right text-xs font-bold text-blue-400">78</span>
+</div>
+<!-- Chelsea Bar -->
+<div class="flex items-center gap-3">
+<span class="w-8 text-xs font-bold text-text-secondary">CHE</span>
+<div class="relative h-2.5 flex-1 overflow-hidden rounded-full bg-surface-darker">
+<div class="absolute left-0 top-0 h-full rounded-full bg-text-secondary" style="width: 55%"></div>
+</div>
+<span class="w-6 text-right text-xs font-bold text-text-secondary">55</span>
+</div>
+</div>
+<!-- Recent Form -->
+<div class="rounded-xl bg-surface-dark p-4 border border-white/5">
+<h4 class="mb-4 text-sm font-bold text-white">Forma Recente</h4>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-8 text-xs font-bold text-text-secondary">ARS</span>
+<div class="flex gap-1">
+<span class="flex size-5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-black">V</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-black">V</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-gray-500 text-[8px] font-bold text-white">E</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white">D</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-black">V</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<span class="flex size-5 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white">D</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-gray-500 text-[8px] font-bold text-white">E</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-black">V</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-primary text-[8px] font-bold text-black">V</span>
+<span class="flex size-5 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white">D</span>
+</div>
+<span class="w-8 text-right text-xs font-bold text-text-secondary">CHE</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sticky Footer CTA -->
+<div class="fixed bottom-0 z-50 w-full max-w-md bg-background-dark/80 backdrop-blur-xl p-4 pb-6 border-t border-white/5">
+<button class="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-4 text-black shadow-[0_0_20px_rgba(43,238,121,0.3)] transition-transform active:scale-[0.98]">
+<span class="text-base font-bold">Apostar Agora</span>
+<span class="material-symbols-outlined text-xl">open_in_new</span>
+</button>
+</div>
+</div>
+</body></html>

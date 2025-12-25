@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - SaaS Bet Analytics</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#197fe6",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#111921",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a222d",
+                        "text-main": "#111418",
+                        "text-sub": "#637588",
+                        "border-light": "#dce0e5",
+                        "border-dark": "#364152",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-white antialiased transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col justify-center overflow-x-hidden p-6 sm:p-8">
+<!-- Header Section -->
+<div class="flex flex-col items-center justify-center pb-8 pt-4">
+<!-- Logo Placeholder -->
+<div class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 dark:bg-primary/20">
+<span class="material-symbols-outlined text-4xl text-primary">analytics</span>
+</div>
+<h1 class="text-center text-[32px] font-bold leading-tight tracking-tight text-text-main dark:text-white">
+                SaaS Bet Analytics
+            </h1>
+<p class="mt-2 text-center text-base font-normal leading-normal text-text-sub dark:text-gray-400">
+                Smart insights for smarter bets.
+            </p>
+</div>
+<!-- Form Section -->
+<div class="w-full max-w-md mx-auto space-y-6">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="ml-2 block text-sm font-semibold tracking-wide text-text-main dark:text-gray-200 uppercase" for="email">
+                    Email Address
+                </label>
+<div class="relative flex items-center">
+<input class="form-input block w-full rounded-full border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark py-4 pl-12 pr-4 text-base text-text-main dark:text-white placeholder:text-text-sub focus:border-primary focus:ring-1 focus:ring-primary dark:focus:border-primary" id="email" placeholder="name@example.com" type="email"/>
+<div class="absolute left-4 top-1/2 -translate-y-1/2 text-text-sub">
+<span class="material-symbols-outlined" style="font-size: 24px;">mail</span>
+</div>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<label class="ml-2 block text-sm font-semibold tracking-wide text-text-main dark:text-gray-200 uppercase" for="password">
+                    Password
+                </label>
+<div class="relative flex items-center">
+<input class="form-input block w-full rounded-full border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark py-4 pl-12 pr-14 text-base text-text-main dark:text-white placeholder:text-text-sub focus:border-primary focus:ring-1 focus:ring-primary dark:focus:border-primary" id="password" placeholder="••••••••" type="password"/>
+<div class="absolute left-4 top-1/2 -translate-y-1/2 text-text-sub">
+<span class="material-symbols-outlined" style="font-size: 24px;">lock</span>
+</div>
+<!-- Right Icons: FaceID & Visibility -->
+<div class="absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-2">
+<button class="text-primary hover:text-blue-600 dark:hover:text-blue-400 flex items-center justify-center transition-colors" title="Use FaceID" type="button">
+<span class="material-symbols-outlined" style="font-size: 24px;">fingerprint</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Forgot Password Link -->
+<div class="flex justify-end px-2">
+<a class="text-sm font-medium text-primary hover:text-blue-700 dark:hover:text-blue-400 transition-colors" href="#">
+                    Forgot Password?
+                </a>
+</div>
+<!-- Login Button -->
+<button class="flex w-full items-center justify-center rounded-full bg-primary py-4 text-base font-bold text-white shadow-lg shadow-primary/30 hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 active:scale-[0.98] transition-all">
+                Log In
+            </button>
+<!-- Divider -->
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-border-light dark:border-border-dark"></div>
+<span class="flex-shrink-0 px-4 text-xs font-medium text-text-sub bg-background-light dark:bg-background-dark uppercase">Or continue with</span>
+<div class="flex-grow border-t border-border-light dark:border-border-dark"></div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 rounded-full border border-border-light dark:border-border-dark bg-white dark:bg-surface-dark py-3 font-medium text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<!-- Apple Logo SVG -->
+<svg aria-hidden="true" class="h-5 w-5" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.504.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"></path>
+</svg>
+<span class="text-sm">Apple</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-full border border-border-light dark:border-border-dark bg-white dark:bg-surface-dark py-3 font-medium text-text-main dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<!-- Google Logo SVG -->
+<svg class="h-5 w-5" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.84z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+</svg>
+<span class="text-sm">Google</span>
+</button>
+</div>
+<!-- Register Button -->
+<button class="flex w-full items-center justify-center rounded-full border-2 border-primary py-4 text-base font-bold text-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors">
+                Create Account
+            </button>
+</div>
+<!-- Footer -->
+<div class="mt-12 text-center">
+<p class="text-xs text-text-sub dark:text-gray-500">
+                Play Responsibly. 18+<br/>
+<a class="underline hover:text-text-main dark:hover:text-gray-300" href="#">Terms of Service</a> &amp; <a class="underline hover:text-text-main dark:hover:text-gray-300" href="#">Privacy Policy</a>
+</p>
+</div>
+</div>
+</body></html>

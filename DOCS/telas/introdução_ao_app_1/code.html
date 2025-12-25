@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Introdução ao App - Fluxo Detalhado</title>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee79",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102217",
+                        "surface-dark": "#182c20",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }.snap-x-mandatory {
+            scroll-snap-type: x mandatory;
+        }
+        .snap-center {
+            scroll-snap-align: center;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased overflow-hidden text-gray-900 dark:text-white">
+<div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+<div class="absolute top-[-10%] right-[-20%] w-[80vw] h-[80vw] bg-primary/10 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-[-10%] left-[-20%] w-[60vw] h-[60vw] bg-primary/5 rounded-full blur-[80px]"></div>
+</div>
+<div class="flex flex-row w-full h-[100dvh] overflow-x-auto snap-x-mandatory no-scrollbar scroll-smooth">
+<div class="w-full flex-none snap-center flex flex-col h-full relative">
+<div class="absolute top-0 left-0 w-full p-6 flex justify-end z-20">
+<button class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Pular</button>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center p-8 pb-0">
+<div class="w-full aspect-[4/3] bg-surface-dark/50 rounded-2xl overflow-hidden relative shadow-2xl ring-1 ring-white/10 mb-8">
+<div class="absolute inset-0 bg-center bg-cover opacity-80" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBWo8zTCQrTSb9-xBEM2h0Cv6Um9g3Yge9ZYdy5XqnrTwgZk0tawwEQGC_D3Iqb--v58gJ5APfKf4gC8a-s9_fGq1KvUC_IhsfxstNcRnb-pOg1TOmuPMJRgU6O274JygaAakMyWeTxfxA2qKFqZTvsGjhj4lg1B2tUsjC6ijzREYNELXdA9URnVwCNFyozbA0xRL8zEzIfkQ_bfTGDLogbOaxdUs0evE3KE9zGVvlSu6nPNqXgTGW7jqyOkcCTGObnu-G--sg8Mj1s");'></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dark via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full">
+<span class="material-symbols-outlined text-primary text-[16px]">analytics</span>
+<span class="text-primary text-xs font-bold tracking-wide uppercase">Bem-vindo</span>
+</div>
+</div>
+</div>
+<h1 class="text-3xl font-bold text-center leading-tight mb-4">
+                    Apostas <span class="text-primary">Inteligentes</span>
+</h1>
+<p class="text-center text-gray-600 dark:text-gray-400 text-base leading-relaxed max-w-[280px]">
+                    Sua central de dados para apostas esportivas. Potencialize seus ganhos com informações precisas.
+                </p>
+</div>
+<div class="p-8 w-full">
+<div class="flex justify-center gap-2 mb-8">
+<div class="w-6 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+</div>
+<button class="w-full bg-primary text-background-dark font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(43,238,121,0.2)] hover:bg-primary/90 transition-all active:scale-[0.98]">
+                    Próximo
+                </button>
+</div>
+</div>
+<div class="w-full flex-none snap-center flex flex-col h-full relative">
+<div class="absolute top-0 left-0 w-full p-6 flex justify-end z-20">
+<button class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Pular</button>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center p-8 pb-0">
+<div class="w-full aspect-square max-w-[280px] bg-surface-dark rounded-3xl flex items-center justify-center relative mb-8 border border-white/5 shadow-2xl">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-3xl"></div>
+<div class="relative z-10 p-6 rounded-2xl bg-background-dark border border-white/5 shadow-inner flex flex-col items-center gap-4 w-3/4">
+<span class="material-symbols-outlined text-6xl text-primary">dashboard</span>
+<div class="w-full h-2 bg-white/10 rounded-full"></div>
+<div class="w-3/4 h-2 bg-white/10 rounded-full"></div>
+<div class="flex gap-2 mt-2 w-full justify-center">
+<div class="w-8 h-8 rounded-lg bg-primary/20"></div>
+<div class="w-8 h-8 rounded-lg bg-white/5"></div>
+<div class="w-8 h-8 rounded-lg bg-white/5"></div>
+</div>
+</div>
+<div class="absolute top-6 right-6 w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_#2bee79]"></div>
+</div>
+<h2 class="text-2xl font-bold text-center mb-3">Dashboard Principal</h2>
+<p class="text-center text-gray-600 dark:text-gray-400 text-sm leading-relaxed max-w-[260px]">
+                    Acompanhe os jogos do dia em tempo real com estatísticas detalhadas e insights instantâneos.
+                </p>
+</div>
+<div class="p-8 w-full">
+<div class="flex justify-center gap-2 mb-8">
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-6 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+</div>
+<button class="w-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-bold py-4 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all active:scale-[0.98]">
+                    Próximo
+                </button>
+</div>
+</div>
+<div class="w-full flex-none snap-center flex flex-col h-full relative">
+<div class="absolute top-0 left-0 w-full p-6 flex justify-end z-20">
+<button class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">Pular</button>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center p-8 pb-0">
+<div class="w-full aspect-square max-w-[280px] bg-surface-dark rounded-3xl flex items-center justify-center relative mb-8 border border-white/5 shadow-2xl overflow-hidden">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center mb-6 ring-1 ring-primary/40 shadow-[0_0_30px_rgba(43,238,121,0.15)]">
+<span class="material-symbols-outlined text-4xl text-primary">psychology</span>
+</div>
+<div class="space-y-3 w-48">
+<div class="flex items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5">
+<span class="text-xs font-bold text-primary">98%</span>
+<div class="h-1.5 flex-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full w-[98%] bg-primary"></div>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5 opacity-60">
+<span class="text-xs font-bold text-primary">85%</span>
+<div class="h-1.5 flex-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-primary"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h2 class="text-2xl font-bold text-center mb-3">Ranking de Sugestões (IA)</h2>
+<p class="text-center text-gray-600 dark:text-gray-400 text-sm leading-relaxed max-w-[260px]">
+                    Identifique as melhores oportunidades de valor calculadas pela nossa Inteligência Artificial exclusiva.
+                </p>
+</div>
+<div class="p-8 w-full">
+<div class="flex justify-center gap-2 mb-8">
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-6 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+</div>
+<button class="w-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-bold py-4 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all active:scale-[0.98]">
+                    Próximo
+                </button>
+</div>
+</div>
+<div class="w-full flex-none snap-center flex flex-col h-full relative">
+<div class="flex-1 flex flex-col items-center justify-center p-8 pb-0">
+<div class="w-full aspect-square max-w-[280px] bg-surface-dark rounded-3xl flex items-center justify-center relative mb-8 border border-white/5 shadow-2xl group overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent opacity-50 z-10"></div>
+<div class="absolute top-8 left-8 right-8 h-32 bg-white/5 rounded-xl border border-dashed border-white/10"></div>
+<div class="absolute bottom-12 w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-[0_4px_20px_rgba(43,238,121,0.4)] z-20 ring-4 ring-background-dark">
+<span class="material-symbols-outlined text-background-dark text-3xl">play_arrow</span>
+</div>
+<span class="material-symbols-outlined text-white/5 text-[140px] absolute pointer-events-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">sports_esports</span>
+</div>
+<h2 class="text-2xl font-bold text-center mb-3">Simulador de Operações</h2>
+<p class="text-center text-gray-600 dark:text-gray-400 text-sm leading-relaxed max-w-[260px]">
+                    Teste estratégias em um ambiente livre de riscos antes de colocar dinheiro real em jogo.
+                </p>
+</div>
+<div class="p-8 w-full">
+<div class="flex justify-center gap-2 mb-8">
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+<div class="w-6 h-1.5 rounded-full bg-primary"></div>
+</div>
+<button class="w-full bg-primary text-background-dark font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(43,238,121,0.2)] hover:bg-primary/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                    Começar Agora
+                    <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+</button>
+<p class="text-xs text-center text-gray-500 mt-6">
+                    Já tem uma conta? <a class="text-primary font-medium hover:underline" href="#">Entrar</a>
+</p>
+</div>
+</div>
+</div>
+
+</body></html>

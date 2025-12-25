@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bem-vindo ao App - Passo 1</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee79",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102217",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden justify-between">
+<div class="flex-none pt-12 pb-4 px-6 flex items-center justify-center w-full z-10">
+<div class="flex flex-row items-center justify-center gap-3">
+<div class="h-2 w-8 rounded-full bg-primary shadow-[0_0_10px_#2bee79]"></div>
+<div class="h-2 w-2 rounded-full bg-slate-300 dark:bg-slate-700/50"></div>
+<div class="h-2 w-2 rounded-full bg-slate-300 dark:bg-slate-700/50"></div>
+</div>
+</div>
+<div class="flex-1 flex flex-col items-center w-full px-6 gap-6 justify-center">
+<div class="@container w-full max-w-sm">
+<div class="relative w-full aspect-[4/5] @[480px]:aspect-video rounded-3xl overflow-hidden shadow-2xl shadow-primary/5 bg-[#1a2c22]">
+<div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-90" data-alt="Abstract data visualization over a dark sports stadium field with neon green highlights" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC_lVSI-BWifdot1di4jnLhlnZZlph8K-yLhsUfWkKu5zwRjnHtERODUH-3bkq2E9aoZfcm0zc_HC-BRLblxOdGId0xHYteMbJjgO7C-8vfjJyrIy0EXwtVtKwC5sshzCmw7V2pEe3_u4KfINoGezikwM4BlNRmdYfHRYAD2Y43d7asodpXOEzQGeVKw4bTMWGQFiezGjwdVAETCkgCp1gEPgpTReIwaBDPJ1x0LiJBbbAjb9bFg5_tQXohvFBwUMFagycmAScSJxj4");'>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-transparent to-transparent"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-24 h-24 rounded-full border border-primary/30 flex items-center justify-center animate-pulse bg-background-dark/30 backdrop-blur-sm">
+<span class="material-symbols-outlined text-primary text-5xl" style="text-shadow: 0 0 15px #2bee79;">
+                                psychology
+                            </span>
+</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center text-center space-y-4 max-w-xs mx-auto">
+<h1 class="text-3xl font-bold tracking-tight leading-[1.15]">
+                    Domine o Jogo <br/>
+<span class="text-primary drop-shadow-[0_0_8px_rgba(43,238,121,0.5)]">com IA</span>
+</h1>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-relaxed">
+                    Receba sugestões de apostas diárias baseadas em dados e análises preditivas. Deixe nossa inteligência artificial trabalhar por você.
+                </p>
+</div>
+</div>
+<div class="flex-none w-full px-6 pt-6 pb-10 flex flex-col items-center gap-5">
+<div class="flex w-full max-w-[480px] gap-4">
+<button class="flex-1 cursor-pointer group relative flex items-center justify-center overflow-hidden rounded-full h-14 px-4 bg-transparent border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-300 text-slate-500 dark:text-slate-400">
+<span class="text-base font-bold tracking-wide">Voltar</span>
+</button>
+<button class="flex-[2] cursor-pointer group relative flex items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-primary hover:bg-[#25d36b] transition-all duration-300 shadow-[0_0_20px_rgba(43,238,121,0.2)]">
+<span class="text-background-dark text-lg font-bold tracking-wide mr-2">Próximo</span>
+<span class="material-symbols-outlined text-background-dark group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">
+                        arrow_forward
+                    </span>
+</button>
+</div>
+<button class="text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors py-2 px-4 rounded-full">
+                Pular Intro
+            </button>
+</div>
+</div>
+
+</body></html>

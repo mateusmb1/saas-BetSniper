@@ -1,0 +1,393 @@
+Esses endpoints da ESPN funcionam mesmo para obter dados em tempo (quase) real de NFL, MLB, NHL, college, NBA, soccer etc., mas são não-oficiais e podem mudar ou ser bloqueados sem aviso.
+​
+
+Avisos importantes
+API não documentada / não suportada pela ESPN; foi descoberta via reverse engineering do próprio site/apps.
+​
+
+Uso em produção para produto comercial é arriscado: endpoints podem mudar, rate limits podem apertar, e pode violar termos de uso se abusar.
+​
+
+Sempre coloca um layer no teu sistema (proxy interno) para facilitar troca de fornecedor depois.
+​
+
+Endpoints genéricos principais (site.api.espn.com)
+Base comum: http://site.api.espn.com/apis/site/v2/sports/...
+​
+
+Alguns que interessam para integrar rápido:
+
+Scoreboard NFL (jogos do dia ou por data):
+
+http://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard
+
+Com data: ...?dates=YYYYMMDD (ex.: ...?dates=20251225).
+​
+
+Notícias NFL:
+
+http://site.api.espn.com/apis/site/v2/sports/football/nfl/news
+​
+
+Todas as equipas NFL:
+
+http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams
+​
+
+Equipa específica NFL:
+
+http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/:team (ex.: patriots, dal, etc.).
+​
+
+MLB / NHL seguem o mesmo padrão:
+​
+
+MLB scoreboard:
+
+http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard?dates=YYYYMMDD
+​
+
+MLB news / teams:
+
+http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news
+
+http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/teams
+​
+
+NHL scoreboard:
+
+http://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard?dates=YYYYMMDD
+​
+
+College Football:
+​
+
+Scoreboard:
+
+http://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard?dates=YYYYMMDD
+
+Game summary (detalhes de um jogo):
+
+http://site.api.espn.com/apis/site/v2/sports/football/college-football/summary?event=:gameId
+
+Team info:
+
+http://site.api.espn.com/apis/site/v2/sports/football/college-football/teams/:team
+
+Rankings:
+
+http://site.api.espn.com/apis/site/v2/sports/football/college-football/rankings
+
+NBA / WNBA / NCAA basketball:
+​
+
+NBA scoreboard:
+
+http://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=YYYYMMDD
+
+NBA news / teams / team:
+
+http://site.api.espn.com/apis/site/v2/sports/basketball/nba/news
+
+http://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams
+
+http://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/:team
+​
+
+Soccer (muito útil para ti):
+​
+
+Scoreboard genérico:
+
+http://site.api.espn.com/apis/site/v2/sports/soccer/:league/scoreboard?dates=YYYYMMDD
+
+Ex.: EPL eng.1, MLS usa.1.
+​
+
+Últimas notícias:
+
+http://site.api.espn.com/apis/site/v2/sports/soccer/:league/news
+​
+
+Lista de equipas de uma liga:
+
+http://site.api.espn.com/apis/site/v2/sports/soccer/:league/teams
+​
+
+Scoreboard para todas as ligas de soccer num dia:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=YYYYMMDD
+​
+
+Endpoints “core” (sports.core.api.espn.com)
+Além do site.api, há a API “core” que dá acesso mais estruturado a seasons, atletas, odds etc.
+​
+
+Lista de todos os esportes:
+
+https://sports.core.api.espn.com/v2/sports
+​
+
+Exemplo NFL – liga:
+
+https://sports.core.api.espn.com/v2/sports/football/leagues/nfl
+​
+
+Atletas NFL por época:
+
+https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/:year/athletes/:athlete_id
+​
+
+Para basquete universitário (lista grande de atletas):
+
+https://sports.core.api.espn.com/v3/sports/basketball/mens-college-basketball/seasons/2024/athletes?...
+​
+
+Como integrar no teu sistema (alto nível)
+Sugestão para o teu stack de betting/analytics:
+
+Cria um serviço (FastAPI, por exemplo) que exponha endpoints internos como:
+
+/espn/nfl/scoreboard?date=YYYY-MM-DD → faz proxy para o site.api.espn.com e normaliza o JSON.
+​
+
+/espn/soccer/:league/scoreboard?date=YYYY-MM-DD
+
+Implementa:
+
+Cache (Redis) de 5–15 segundos para live e 1–5 minutos para dados históricos.
+​
+
+Normalização de IDs (liga, equipa, jogo) para bater com teu modelo interno / casas de apostas.
+​
+
+Tratamento de falhas (timeout, mudanças de schema).
+​
+
+Próximo passo: escolher esporte + payload
+Se disseres qual esporte/mercado queres priorizar primeiro (por exemplo: “NFL live scoreboard com drive detail” ou “soccer scoreboard para principais ligas europeias”), dá para montar contigo:
+
+Exemplo de request real (curl / Python).
+
+Campos-chave do JSON (IDs de jogos, status, odds se existirem, clock, period, etc.).
+
+Esquema de tabela para teu banco (games, teams, events, stats).
+
+Diz qual liga e tipo de dado queres puxar primeiro que já organizo um mini-contrato de API pra integrares direto.
+
+eu preciso de futebol não o americano , mba, volei, tenis . Tem?
+Revisto 18 fontes
+Sim, tem futebol (soccer “normal”), basquete, vôlei e ténis nesses endpoints “escondidos” da ESPN.
+​
+
+Futebol (soccer)
+Padrão geral: https://site.api.espn.com/apis/site/v2/sports/soccer/:league/...
+​
+
+Alguns exemplos úteis:
+
+Scoreboard de uma liga num dia:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20251225 (Premier League).
+​
+
+Todas as ligas de soccer num dia:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=20250215.
+​
+
+Notícias da liga:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/news.
+​
+
+Equipas de uma liga:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/teams.
+​
+
+Exemplo FIFA:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard.
+​
+
+Basquete (NBA e outros)
+NBA já vem bem documentado nesses gists/threads.
+​
+
+Scoreboard NBA:
+
+https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=20251225.
+​
+
+Notícias NBA:
+
+https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news.
+​
+
+Equipas NBA:
+
+https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams.
+​
+
+Outros exemplos de basquete:
+​
+
+WNBA scoreboard:
+
+https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/scoreboard
+
+Men’s college basketball:
+
+https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard
+
+Voleibol
+Há menos coisa, mas existe pelo menos college volleyball feminino documentado.
+​
+
+Rankings voleibol feminino universitário:
+
+https://site.api.espn.com/apis/site/v2/sports/volleyball/womens-college-volleyball/rankings.
+​
+
+Scoreboard/resultados (padrão análogo):
+
+https://site.api.espn.com/apis/site/v2/sports/volleyball/womens-college-volleyball/scoreboard?dates=20251225 (formato seguido por outros esportes, usado por integrações da comunidade).
+​
+
+Para outros tipos de voleibol, o caminho é usar a lista de sports/leagues:
+​
+
+Todos os sports:
+
+https://sports.core.api.espn.com/v2/sports
+
+Depois entrar em volleyball e ver leagues para descobrir os códigos de liga disponíveis.
+​
+
+Ténis
+No core API, ténis aparece com parâmetro {tour}.
+​
+
+Tours disponíveis (via core API):
+
+https://sports.core.api.espn.com/v2/sports/tennis/leagues → devolve ligas/tours como atp, wta etc.
+​
+
+Estrutura típica de season/event:
+
+https://sports.core.api.espn.com/v2/sports/tennis/leagues/atp/seasons/2025
+
+https://sports.core.api.espn.com/v2/sports/tennis/leagues/atp/seasons/2025/events (lista de torneios/jogos).
+​
+
+Nem tudo em ténis está no site.api, muitas coisas vêm pelo sports.core.api.espn.com (dados mais estruturados de seasons, eventos, atletas).
+​
+
+Tabela rápida de exemplos
+Esporte	Tipo	Endpoint exemplo
+Futebol	Scoreboard	https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=YYYYMMDD 
+​
+Futebol	Global dia	https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=YYYYMMDD 
+​
+NBA	Scoreboard	https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates=YYYYMMDD 
+​
+Voleibol	Rankings	https://site.api.espn.com/apis/site/v2/sports/volleyball/womens-college-volleyball/rankings 
+​
+Ténis	Ligas	https://sports.core.api.espn.com/v2/sports/tennis/leagues 
+​
+Ténis	Eventos	https://sports.core.api.espn.com/v2/sports/tennis/leagues/atp/seasons/2025/events 
+​
+Se disseres exatamente:
+
+quais ligas de futebol (EPL, La Liga, Serie A, Champions, BR, PT, etc.),
+
+se quer só scoreboard ou também stats/detalhes,
+
+monto um “contrato” JSON direitinho (campos principais) para integrares no teu sistema de bets/analytics.
+
+alem desse endpoints, tem os que mostram jogos do dia, no ao vivo ( com o tempo a decorrer e estatisticas), e jogos que vam decorrer na semana, tipo de segunda a domingo.
+Revisto 20 fontes
+Dá para ter tudo isso: jogos ao vivo com tempo/estado, jogos de hoje e agenda por intervalo de datas (ex.: segunda–domingo) usando os mesmos endpoints, combinando scoreboard, summary e parâmetros de data.
+​
+
+Jogos do dia e ao vivo (com tempo e estado)
+Para cada esporte/liga (ex.: futebol EPL eng.1):
+
+Scoreboard do dia (inclui jogos passados, em andamento e futuros daquele dia):
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard → sem dates assume hoje.
+​
+
+Live status dentro do JSON:
+
+Em events[*].status tens campos como type.name (STATUS_IN_PROGRESS, STATUS_FINAL, STATUS_SCHEDULED), type.state (in, post, pre) e displayClock (45'+2, 73:15, etc.).
+​
+
+Em futebol, o placar e tempo vêm em competitions[0].status e competitions[0].competitors[*].score.
+​
+
+Para estatísticas mais detalhadas de um jogo específico, usas o event.id do scoreboard:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/summary?event={eventId} → boxscore, stats, lineups, etc., atualizando durante o jogo.
+​
+
+Mesma ideia vale para NBA, vólei (quando suportado) e ténis, mudando o caminho do esporte/liga.
+​
+
+Jogos da semana / intervalo de datas
+Os scoreboards aceitam:
+
+dates=YYYYMMDD → um dia.
+​
+
+dates=YYYYMMDD-YYYYMMDD → intervalo de datas, por exemplo, segunda a domingo:
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard?dates=20251222-20251228.
+​
+
+Isso retorna todos os jogos da liga nesse intervalo (já jogados, ao vivo e futuros), e cada evento traz date e status para filtrar no teu sistema por:
+
+“já começou”, “ao vivo”, “a começar em X minutos”, “futuro na semana”, etc.
+​
+
+Para toda a bola num intervalo (todas ligas soccer que a ESPN cobre):
+
+https://site.api.espn.com/apis/site/v2/sports/soccer/all/scoreboard?dates=20251222-20251228.
+​
+
+Estatísticas in-game
+Fluxo típico para ter live + stats:
+
+Chama o scoreboard da liga/dia ou intervalo (scoreboard).
+​
+
+Para cada jogo que te interessa, guarda event.id.
+​
+
+Periodicamente (por exemplo, a cada 10–20 s só para jogos STATUS_IN_PROGRESS), chama:
+
+.../summary?event={eventId} para carregar:
+
+gols, remates, posse (quando disponível), cartões, substituições, etc.
+​
+
+Para ténis / outros esportes, o live detalhado por vezes vem mais pela sports.core.api.espn.com (events, competitions, statistics) mas o padrão scoreboard + summary continua o mesmo.
+​
+
+Como montar no teu sistema (ideia prática)
+Endpoints internos que podes criar:
+
+/espn/soccer/{league}/games?date=YYYY-MM-DD → faz proxy para scoreboard?dates=YYYYMMDD.
+​
+
+/espn/soccer/{league}/games?from=YYYY-MM-DD&to=YYYY-MM-DD → mapeia para dates=YYYYMMDD-YYYYMMDD.
+​
+
+/espn/event/{eventId}/summary → proxy para .../summary?event={eventId}.
+​
+
+No teu banco, salva:
+
+event_id, home_team_id, away_team_id, status.state, status.type.name, start_time, league, + stats que for usar nos modelos de odds/algoritmos.
+​

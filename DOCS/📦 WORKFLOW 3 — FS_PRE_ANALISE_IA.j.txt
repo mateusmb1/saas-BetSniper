@@ -1,0 +1,40 @@
+📦 WORKFLOW 3 — FS_PRE_ANALISE_IA.json
+
+👉 Gera sugestões inteligentes para o SaaS
+
+{
+  "name": "FS_Pre_Analise_IA",
+  "nodes": [
+    {
+      "parameters": {
+        "functionCode": "const jogo = $json;\nlet mercado = 'Nenhum';\nlet risco = 'medio';\nif (jogo.media_gols > 2.5) {\n  mercado = 'Over 0.5 HT';\n  risco = 'baixo';\n}\nif (jogo.forca_casa > jogo.forca_fora) {\n  mercado = 'Dupla Chance Casa';\n}\nreturn [{ json: { mercado, risco } }];"
+      },
+      "name": "Classificador Mercado",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const prob = $json.probabilidade_modelo || 0.7;\nconst odd = $json.odd || 1.55;\nconst implied = 1 / odd;\nconst value = prob - implied;\nconst score = Math.round((prob * 70) + (value * 100));\nreturn [{ json: { probabilidade_real: prob, value_index: value, score } }];"
+      },
+      "name": "Score & Value",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Classificador Mercado": {
+      "main": [
+        [
+          {
+            "node": "Score & Value",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

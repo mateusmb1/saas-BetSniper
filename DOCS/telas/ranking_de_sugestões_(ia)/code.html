@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ranking de Sugestões (IA)</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee79",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102217",
+                        "surface-dark": "#18261e",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom Scrollbar Hide */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary selection:text-black pb-24">
+<!-- Sticky Header -->
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-white/5 px-4 pt-12 pb-4 transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-emerald-600 flex items-center justify-center text-black font-bold shadow-[0_0_10px_rgba(43,238,121,0.3)]">
+<span class="material-symbols-outlined">smart_toy</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-xl font-bold leading-none tracking-tight">Ranking AI</h1>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded">PRO</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Online</span>
+</div>
+</div>
+</div>
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<!-- Chips / Filters -->
+<div class="flex gap-3 mt-6 overflow-x-auto no-scrollbar pb-1">
+<button class="flex h-9 shrink-0 items-center justify-center px-5 rounded-full bg-primary text-black text-sm font-bold shadow-[0_0_15px_rgba(43,238,121,0.2)] transition-transform active:scale-95">
+                Todos
+            </button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 px-5 rounded-full bg-surface-dark border border-white/10 text-slate-300 text-sm font-medium hover:border-primary/50 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]">sports_soccer</span>
+                Futebol
+            </button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 px-5 rounded-full bg-surface-dark border border-white/10 text-slate-300 text-sm font-medium hover:border-primary/50 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]">sports_basketball</span>
+                Basquete
+            </button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-2 px-5 rounded-full bg-surface-dark border border-white/10 text-slate-300 text-sm font-medium hover:border-primary/50 transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[18px]">sports_tennis</span>
+                Tênis
+            </button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex flex-col gap-5 p-4 mt-2">
+<!-- Suggestion Card 1 (Top Pick) -->
+<div class="relative w-full rounded-[24px] bg-surface-dark border border-primary/20 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.2)] overflow-hidden">
+<!-- Rank Badge -->
+<div class="absolute top-0 right-0 bg-primary text-black font-black text-xs px-3 py-1.5 rounded-bl-2xl rounded-tr-[24px]">
+                #1
+            </div>
+<!-- Header: Match -->
+<div class="flex items-center gap-3 mb-4">
+<div class="flex -space-x-2">
+<img alt="Man City Logo" class="w-8 h-8 rounded-full bg-white border border-surface-dark ring-2 ring-surface-dark z-10 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxkLWBzDfvciYugFi9spZds3zN-XWEDf4tP3e2FJ97Yn-dmWUXK4wjRqqI6ePOIkEzkhKcXwor8XkQ_ITLRnIPRFIfuKDRoyG8R1xeNYqF3D8eetuL6tEgeB9P6AJwG5C3oXYsIJyzMv3M4p-2JSjD__-GR-sgu-kGmesmjRvpc75dnsZET5wDV9b9_NKs2e_7zPKYFTPYUz555NNSh42Aiq3kGIbxIWyjLN00vc9hQl6aMBzx_fGVeTZHkYOlGjq3dTbMdBcLbWaK"/>
+<img alt="Arsenal Logo" class="w-8 h-8 rounded-full bg-white border border-surface-dark ring-2 ring-surface-dark z-0 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLd6JE-qF2uac-E-Is2ljVzbLVegJ5P_-PUHJwCM_wahlv2f14nqvpjh8R-G0e3gQzG4U-eF8DCNxCeuC2NUnMDWUbvhGULO18YnLfhsV3PpYMK0lxAAFBiNLnOsAz5iGQ76fHuRGL4zJqdfqpUef9kuGpABA1nnVdHIQU4dbzLo1xnBWCK_HKIn75Y3wZblqClII62maXkPJqw1XrP7R_IIDxxZLIoIuEyPZjhV9fGamb1_sc9VcBOv132mkbkJ_sEM8rVBKvwRv4"/>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-400 font-medium">Premier League</span>
+<h3 class="text-white font-bold text-base leading-tight">Man City vs Arsenal</h3>
+</div>
+</div>
+<!-- Market & Odd -->
+<div class="mb-5">
+<p class="text-slate-400 text-xs mb-1">Mercado Sugerido</p>
+<div class="flex items-baseline gap-2">
+<span class="text-xl font-bold text-white">Vitória Casa</span>
+<span class="text-lg font-bold text-primary">@ 2.10</span>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-2 mb-5 bg-[#111915] rounded-2xl p-3 border border-white/5">
+<div class="flex flex-col items-center gap-1 border-r border-white/5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Prob.</span>
+<span class="text-white font-bold text-lg">65%</span>
+</div>
+<div class="flex flex-col items-center gap-1 border-r border-white/5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Score</span>
+<span class="text-primary font-black text-lg drop-shadow-[0_0_8px_rgba(43,238,121,0.5)]">98</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Risco</span>
+<span class="text-emerald-400 font-bold text-lg">Baixo</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-3">
+<button class="flex-1 h-11 bg-primary hover:bg-emerald-400 text-black font-bold text-sm rounded-full flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                    Simular
+                </button>
+<button class="flex-1 h-11 bg-transparent border border-white/20 hover:bg-white/5 text-white font-bold text-sm rounded-full flex items-center justify-center transition-all active:scale-[0.98]">
+                    Detalhes
+                </button>
+</div>
+</div>
+<!-- Suggestion Card 2 -->
+<div class="relative w-full rounded-[24px] bg-surface-dark border border-white/5 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+<!-- Rank Badge -->
+<div class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 rounded-full bg-[#25332b] text-white font-bold text-sm border border-white/10">
+                #2
+            </div>
+<!-- Header: Match -->
+<div class="flex items-center gap-3 mb-4">
+<div class="flex -space-x-2">
+<img alt="Lakers Logo" class="w-8 h-8 rounded-full bg-white border border-surface-dark ring-2 ring-surface-dark z-10 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCV_fENTSg2Z3x3CzVvf7cdklU7ImduCeeM6ewhRybyPK3UvDU9YLEZpXfl6NRh3_c6z68OZK-F1dAw4TO_sNQIA746n7P88SRITFl39F9hmFtgktQ-rNQpJdZSsuNS0yQ6MLtgbFys_SFlMHqxoArCkGUsVrtCNbnOIsCyKnUse62IC2Neg7Y36MDnZbLi88sDF6hFVTzrR5yE_YhDnP8v4zG5P1MmrfbVeAFtdH4qsgSkHFbMeGgG3_Isv1h45Z5Ozq7SqNck1UA"/>
+<img alt="Heat Logo" class="w-8 h-8 rounded-full bg-white border border-surface-dark ring-2 ring-surface-dark z-0 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsah-nnko-0du5wd7wPVF5dlk6EzQDtpSucjYkbJLvSMDnv31q1ly32lgG97YQqEEIjBMQA5DklWNjOZPTfXHxp56vqb76Ee8GY9pvMUfCNgc2IfUrnBvWJ5tkU4WbGmacbsvg05m6mFr0mA1YjWWkKHTUjjCNlZv1ZC3G84ngrfnw_PdN84PPDEAvq4BGzzRwoPUR-ChEtUVHP_AQXgVQBuF8V_v5zCsiTJrmw0FZvuTPgoWOLQnetbOnHPwAs9Qp6Kf26haWej_g"/>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-400 font-medium">NBA</span>
+<h3 class="text-white font-bold text-base leading-tight">Lakers vs Heat</h3>
+</div>
+</div>
+<!-- Market & Odd -->
+<div class="mb-5">
+<p class="text-slate-400 text-xs mb-1">Mercado Sugerido</p>
+<div class="flex items-baseline gap-2">
+<span class="text-xl font-bold text-white">Over 210 Points</span>
+<span class="text-lg font-bold text-primary">@ 1.90</span>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-2 mb-5">
+<div class="flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Prob.</span>
+<span class="text-white font-bold text-lg">58%</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Score</span>
+<span class="text-white font-bold text-lg">92</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Risco</span>
+<span class="text-yellow-500 font-bold text-lg">Médio</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-3">
+<button class="flex-1 h-10 bg-[#25332b] text-primary font-bold text-sm rounded-full flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+                    Simular
+                </button>
+<button class="flex-1 h-10 bg-transparent text-slate-300 font-bold text-sm rounded-full flex items-center justify-center hover:text-white transition-all">
+                    Detalhes
+                </button>
+</div>
+</div>
+<!-- Suggestion Card 3 (Tennis) -->
+<div class="relative w-full rounded-[24px] bg-surface-dark border border-white/5 p-5 shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+<!-- Rank Badge -->
+<div class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 rounded-full bg-[#25332b] text-white font-bold text-sm border border-white/10">
+                #3
+            </div>
+<!-- Header: Match -->
+<div class="flex items-center gap-3 mb-4">
+<div class="flex -space-x-2">
+<img alt="Player 1 Avatar" class="w-8 h-8 rounded-full bg-white border border-surface-dark ring-2 ring-surface-dark z-10 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyPMjcptgSX0MVsbHKUFRUUw0WyjiemCSwUhGhAP1IV3MYpXkHD7AknarqW2iC7wT3vRCMp2kep6NpC5h8sHIeYcAlqt_cSWpx25aG6308AgjL6oHu8KtB4AckQ8DKIPcdI_KATbdgf0iz2XgQHOV0JpgpLlGrCvVIFTdvrgKFfjYWBOLv_M-hCLObx3gqbVqiKMfLdRDBwkyZyRoxZ7KEpO0lQ6A0gC_mdu7C6zWGcZaJ58LOejhAWpLrbmL4Qf4cUOyNYDKUdLaE"/>
+<img alt="Player 2 Avatar" class="w-8 h-8 rounded-full bg-white border border-surface-dark ring-2 ring-surface-dark z-0 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAPI6Ys5uisXWpjvidRO9WP3FZbxNU8-DiMcQ5cqkAlcYclv2t_UG-QyIgsg9g9G5cyKA4meZyWBrH6FvZZMks3lYBoMLxqwuncEB0A7DdAMy_aPXZSEqDKturv7e6NqP59pGWykvo-o3BZP3ID0wfI86M0iEvCNdI4hbsS3rJjZadTH47OnrlyAvdd3KYuwUy7QDkmdA1IAMQcPUmniw6F5tasHpt6W-27cqoKoA1fIIWu-lFfsscYM09StDTsT9L3SqGbUgWvVcW"/>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-400 font-medium">ATP Miami</span>
+<h3 class="text-white font-bold text-base leading-tight">Alcaraz vs Sinner</h3>
+</div>
+</div>
+<!-- Market & Odd -->
+<div class="mb-5">
+<p class="text-slate-400 text-xs mb-1">Mercado Sugerido</p>
+<div class="flex items-baseline gap-2">
+<span class="text-xl font-bold text-white">Set 1 Winner</span>
+<span class="text-lg font-bold text-primary">@ 1.75</span>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-3 gap-2 mb-5">
+<div class="flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Prob.</span>
+<span class="text-white font-bold text-lg">72%</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Score</span>
+<span class="text-white font-bold text-lg">88</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-wider text-slate-500 font-bold">Risco</span>
+<span class="text-emerald-400 font-bold text-lg">Baixo</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex gap-3">
+<button class="flex-1 h-10 bg-[#25332b] text-primary font-bold text-sm rounded-full flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+                    Simular
+                </button>
+<button class="flex-1 h-10 bg-transparent text-slate-300 font-bold text-sm rounded-full flex items-center justify-center hover:text-white transition-all">
+                    Detalhes
+                </button>
+</div>
+</div>
+<!-- Locked Item (Teaser) -->
+<div class="relative w-full rounded-[24px] bg-surface-dark border border-white/5 p-5 shadow-none opacity-80 overflow-hidden group">
+<!-- Blur Content -->
+<div class="blur-[6px] select-none pointer-events-none opacity-50 grayscale transition-all duration-500">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-8 h-8 rounded-full bg-slate-700"></div>
+<div class="flex flex-col gap-1">
+<div class="h-3 w-20 bg-slate-700 rounded-full"></div>
+<div class="h-4 w-32 bg-slate-600 rounded-full"></div>
+</div>
+</div>
+<div class="mb-5">
+<div class="h-3 w-24 bg-slate-700 rounded-full mb-2"></div>
+<div class="h-6 w-40 bg-slate-600 rounded-full"></div>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="h-10 w-full bg-slate-700 rounded-lg"></div>
+<div class="h-10 w-full bg-slate-700 rounded-lg"></div>
+<div class="h-10 w-full bg-slate-700 rounded-lg"></div>
+</div>
+</div>
+<!-- Lock Overlay -->
+<div class="absolute inset-0 flex flex-col items-center justify-center z-10 bg-gradient-to-b from-transparent to-surface-dark/90">
+<div class="h-12 w-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center mb-3 border border-white/10">
+<span class="material-symbols-outlined text-white">lock</span>
+</div>
+<p class="text-white font-bold text-sm">Score 79 - Bloqueado</p>
+<p class="text-slate-400 text-xs mb-3">Disponível apenas para planos ELITE</p>
+<button class="px-5 py-2 rounded-full bg-white text-black font-bold text-xs uppercase tracking-wider hover:bg-slate-200 transition-colors">
+                    Desbloquear Agora
+                </button>
+</div>
+<!-- Rank Badge (Visible) -->
+<div class="absolute top-5 right-5 flex items-center justify-center w-8 h-8 rounded-full bg-[#25332b] text-slate-500 font-bold text-sm border border-white/5 z-0">
+                #4
+            </div>
+</div>
+<div class="h-8"></div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full bg-[#111814]/90 backdrop-blur-xl border-t border-white/5 pb-safe pt-2 px-2 z-50">
+<div class="flex justify-around items-center h-16">
+<button class="flex flex-1 flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px] font-medium">Início</span>
+</button>
+<button class="flex flex-1 flex-col items-center gap-1 text-primary">
+<div class="relative">
+<span class="material-symbols-outlined filled-icon text-[24px]">leaderboard</span>
+<span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+</span>
+</div>
+<span class="text-[10px] font-bold">Ranking</span>
+</button>
+<button class="flex flex-1 flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined text-[24px]">pie_chart</span>
+<span class="text-[10px] font-medium">Análise</span>
+</button>
+<button class="flex flex-1 flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors">
+<div class="w-6 h-6 rounded-full overflow-hidden border border-slate-600">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnKIQGEUusVEJ9hP7apy55y0PdYbsWgXCti6fWXxruWMZyx42mvyScGdbly0StoN2nrIU0c4M7tMniLb6RcxsyyxR80ueUjYEb8HIdVOLUeAOpvCiOt9oVd9EAGcI7X_3fhKQfsi_3Mc3mKgQRvhDCBIHBRs_sB01V6Snvaz6dIsGNQEeyPzoLTyd9-ZKhzMI62axyOneE8VEssHZMVCapO0rRvHap9vMtQt-fJkealysufTEL_6vvsoVU5jVMXfOdE2tLeKC3uIqD"/>
+</div>
+<span class="text-[10px] font-medium">Perfil</span>
+</button>
+</div>
+</nav>
+<!-- Safe Area Padding for Bottom Nav -->
+<div class="h-20 w-full"></div>
+</body></html>

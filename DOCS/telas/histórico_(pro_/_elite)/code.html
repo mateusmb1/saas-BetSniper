@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Histórico (PRO)</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee79",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102217",
+                        "card-dark": "#18281e", // Slightly lighter than background-dark
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        
+        .glass-nav {
+            background: rgba(16, 34, 23, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-x-hidden">
+<div class="relative min-h-screen flex flex-col max-w-md mx-auto w-full pb-24">
+<!-- Header -->
+<header class="flex items-center p-4 pb-2 justify-between sticky top-0 z-20 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md">
+<div class="flex items-center gap-2">
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">Histórico</h2>
+<div class="px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-200 to-yellow-400 text-black text-[10px] font-bold tracking-wider uppercase shadow-[0_0_10px_rgba(251,191,36,0.3)]">
+                    PRO
+                </div>
+</div>
+<button class="flex items-center justify-center rounded-full w-10 h-10 hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-white/80">tune</span>
+</button>
+</header>
+<!-- Segmented Controls -->
+<div class="px-4 py-2">
+<div class="flex h-11 w-full items-center justify-center rounded-full bg-card-dark p-1">
+<label class="group flex cursor-pointer h-full flex-1 items-center justify-center overflow-hidden rounded-full has-[:checked]:bg-background-dark has-[:checked]:shadow-sm transition-all duration-200">
+<span class="text-white/60 group-has-[:checked]:text-primary text-sm font-medium transition-colors">7 Days</span>
+<input class="invisible w-0 absolute" name="period" type="radio" value="7 Days"/>
+</label>
+<label class="group flex cursor-pointer h-full flex-1 items-center justify-center overflow-hidden rounded-full has-[:checked]:bg-background-dark has-[:checked]:shadow-sm transition-all duration-200">
+<span class="text-white/60 group-has-[:checked]:text-primary text-sm font-medium transition-colors">30 Days</span>
+<input checked="" class="invisible w-0 absolute" name="period" type="radio" value="30 Days"/>
+</label>
+<label class="group flex cursor-pointer h-full flex-1 items-center justify-center overflow-hidden rounded-full has-[:checked]:bg-background-dark has-[:checked]:shadow-sm transition-all duration-200">
+<span class="text-white/60 group-has-[:checked]:text-primary text-sm font-medium transition-colors">All Time</span>
+<input class="invisible w-0 absolute" name="period" type="radio" value="All Time"/>
+</label>
+</div>
+</div>
+<!-- Stats Overview (Horizontal Scroll) -->
+<div class="w-full overflow-x-auto no-scrollbar py-4 pl-4 pr-2">
+<div class="flex gap-3 min-w-max pr-4">
+<!-- Card 1: Profit -->
+<div class="flex w-[160px] flex-col gap-1 rounded-2xl p-4 bg-card-dark border border-white/5">
+<p class="text-white/60 text-sm font-medium">Total Profit</p>
+<p class="text-white tracking-tight text-2xl font-bold">+$4,250</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+<p class="text-primary text-xs font-bold">+5.2%</p>
+</div>
+</div>
+<!-- Card 2: Win Rate -->
+<div class="flex w-[160px] flex-col gap-1 rounded-2xl p-4 bg-card-dark border border-white/5">
+<p class="text-white/60 text-sm font-medium">Win Rate</p>
+<p class="text-white tracking-tight text-2xl font-bold">62%</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+<p class="text-primary text-xs font-bold">+1.5%</p>
+</div>
+</div>
+<!-- Card 3: ROI -->
+<div class="flex w-[160px] flex-col gap-1 rounded-2xl p-4 bg-card-dark border border-white/5">
+<p class="text-white/60 text-sm font-medium">ROI</p>
+<p class="text-white tracking-tight text-2xl font-bold">12.4%</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+<p class="text-primary text-xs font-bold">+0.8%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Chart Section -->
+<div class="px-4 py-2">
+<div class="rounded-3xl bg-card-dark p-5 border border-white/5">
+<div class="flex justify-between items-end mb-4">
+<div>
+<p class="text-white/60 text-sm font-medium mb-1">Bankroll Trend</p>
+<h3 class="text-white text-3xl font-bold tracking-tight">+$4,250</h3>
+</div>
+<div class="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold">
+                        +15%
+                    </div>
+</div>
+<div class="h-[140px] w-full relative">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 300 100">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#2bee79" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#2bee79" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Area Fill -->
+<path d="M0 80 C40 80 50 60 80 60 C110 60 120 30 150 45 C180 60 200 20 230 30 C260 40 270 10 300 5 V100 H0 Z" fill="url(#chartGradient)"></path>
+<!-- Stroke Line -->
+<path d="M0 80 C40 80 50 60 80 60 C110 60 120 30 150 45 C180 60 200 20 230 30 C260 40 270 10 300 5" fill="none" stroke="#2bee79" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+</svg>
+<!-- Axis Labels (Simulated) -->
+<div class="flex justify-between mt-2 text-[10px] text-white/30 font-mono">
+<span>Oct 01</span>
+<span>Oct 15</span>
+<span>Oct 30</span>
+</div>
+</div>
+</div>
+</div>
+<!-- History List Header -->
+<div class="px-6 pt-6 pb-2">
+<h3 class="text-white font-semibold text-lg">Recent Activity</h3>
+</div>
+<!-- List Items -->
+<div class="flex flex-col gap-3 px-4">
+<!-- Item 1: Win (NBA) -->
+<div class="group relative flex flex-col gap-3 rounded-2xl bg-card-dark p-4 border border-white/5 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center rounded-xl bg-background-dark shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined" style="font-size: 20px;">sports_basketball</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-0.5">
+<span class="text-[11px] text-white/40 uppercase tracking-wider font-bold">NBA • Today, 19:30</span>
+</div>
+<p class="text-white text-[15px] font-semibold leading-tight">Lakers vs. Bulls</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold uppercase mb-1">WIN</div>
+<p class="text-primary text-base font-bold">+$450.00</p>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-white/5"></div>
+<!-- Details -->
+<div class="flex justify-between items-center text-sm">
+<p class="text-white/60">Moneyline (Lakers)</p>
+<div class="flex gap-3">
+<p class="text-white/40 font-mono text-xs"><span class="text-primary font-bold">EV</span> +5.2%</p>
+<p class="text-white/40 font-mono text-xs">Odds <span class="text-white">1.95</span></p>
+</div>
+</div>
+</div>
+<!-- Item 2: Loss (Soccer) -->
+<div class="group relative flex flex-col gap-3 rounded-2xl bg-card-dark p-4 border border-white/5 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center rounded-xl bg-background-dark shrink-0 size-10 text-white/70">
+<span class="material-symbols-outlined" style="font-size: 20px;">sports_soccer</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-0.5">
+<span class="text-[11px] text-white/40 uppercase tracking-wider font-bold">PL • Yesterday</span>
+</div>
+<p class="text-white text-[15px] font-semibold leading-tight">Man City vs. Arsenal</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 text-[10px] font-bold uppercase mb-1">LOSS</div>
+<p class="text-red-400 text-base font-bold">-$120.00</p>
+</div>
+</div>
+<div class="h-px w-full bg-white/5"></div>
+<div class="flex justify-between items-center text-sm">
+<p class="text-white/60">Over 2.5 Goals</p>
+<div class="flex gap-3">
+<p class="text-white/40 font-mono text-xs"><span class="text-primary font-bold">EV</span> +2.1%</p>
+<p class="text-white/40 font-mono text-xs">Odds <span class="text-white">1.85</span></p>
+</div>
+</div>
+</div>
+<!-- Item 3: Win (Tennis) -->
+<div class="group relative flex flex-col gap-3 rounded-2xl bg-card-dark p-4 border border-white/5 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center rounded-xl bg-background-dark shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined" style="font-size: 20px;">sports_tennis</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-0.5">
+<span class="text-[11px] text-white/40 uppercase tracking-wider font-bold">ATP • Oct 12</span>
+</div>
+<p class="text-white text-[15px] font-semibold leading-tight">Alcaraz vs. Sinner</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold uppercase mb-1">WIN</div>
+<p class="text-primary text-base font-bold">+$280.00</p>
+</div>
+</div>
+<div class="h-px w-full bg-white/5"></div>
+<div class="flex justify-between items-center text-sm">
+<p class="text-white/60">Set 1 Winner (Alcaraz)</p>
+<div class="flex gap-3">
+<p class="text-white/40 font-mono text-xs"><span class="text-primary font-bold">EV</span> +8.4%</p>
+<p class="text-white/40 font-mono text-xs">Odds <span class="text-white">1.72</span></p>
+</div>
+</div>
+</div>
+<!-- Item 4: Loss (MMA) -->
+<div class="group relative flex flex-col gap-3 rounded-2xl bg-card-dark p-4 border border-white/5 active:scale-[0.98] transition-transform">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center rounded-xl bg-background-dark shrink-0 size-10 text-white/70">
+<span class="material-symbols-outlined" style="font-size: 20px;">sports_mma</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-0.5">
+<span class="text-[11px] text-white/40 uppercase tracking-wider font-bold">UFC • Oct 10</span>
+</div>
+<p class="text-white text-[15px] font-semibold leading-tight">Pereira vs. Hill</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 text-[10px] font-bold uppercase mb-1">LOSS</div>
+<p class="text-red-400 text-base font-bold">-$50.00</p>
+</div>
+</div>
+<div class="h-px w-full bg-white/5"></div>
+<div class="flex justify-between items-center text-sm">
+<p class="text-white/60">Method: KO/TKO</p>
+<div class="flex gap-3">
+<p class="text-white/40 font-mono text-xs"><span class="text-primary font-bold">EV</span> +1.5%</p>
+<p class="text-white/40 font-mono text-xs">Odds <span class="text-white">2.10</span></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 glass-nav pb-safe">
+<div class="flex justify-around items-center h-16 px-2">
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-white/40 group-hover:text-primary transition-colors text-[26px]">home</span>
+<span class="text-[10px] font-medium text-white/40 group-hover:text-primary transition-colors">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-primary text-[26px] fill">history</span>
+<span class="text-[10px] font-medium text-primary">History</span>
+</a>
+<div class="flex flex-col items-center justify-center w-full h-full -mt-6">
+<button class="flex items-center justify-center w-14 h-14 rounded-full bg-primary text-background-dark shadow-[0_0_15px_rgba(43,238,121,0.4)]">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-white/40 group-hover:text-primary transition-colors text-[26px]">analytics</span>
+<span class="text-[10px] font-medium text-white/40 group-hover:text-primary transition-colors">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full gap-1 group" href="#">
+<span class="material-symbols-outlined text-white/40 group-hover:text-primary transition-colors text-[26px]">person</span>
+<span class="text-[10px] font-medium text-white/40 group-hover:text-primary transition-colors">Profile</span>
+</a>
+</div>
+<!-- Safe Area Spacer for iOS Home Indicator -->
+<div class="h-5 w-full"></div>
+</nav>
+</div>
+</body></html>

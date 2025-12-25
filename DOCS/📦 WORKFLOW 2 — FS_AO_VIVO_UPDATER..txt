@@ -1,0 +1,66 @@
+📦 WORKFLOW 2 — FS_AO_VIVO_UPDATER.json
+
+👉 Atualiza placar, minuto e status (a cada 30s)
+
+{
+  "name": "FS_Ao_Vivo_Updater",
+  "nodes": [
+    {
+      "parameters": {
+        "interval": 30
+      },
+      "name": "Cron 30s",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://d.flashscore.com/x/feed/df_st_1_{{$json.id}}",
+        "options": {
+          "headers": {
+            "X-Fsign": "SW9D1eZo",
+            "User-Agent": "Mozilla/5.0"
+          }
+        }
+      },
+      "name": "Detalhe Jogo",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const txt = JSON.stringify($json);\nconst placar = txt.match(/SC:([0-9]+)\\-([0-9]+)/);\nconst minuto = txt.match(/TM:([0-9]+)/);\nreturn [{\n  json: {\n    placar_casa: placar ? Number(placar[1]) : null,\n    placar_fora: placar ? Number(placar[2]) : null,\n    minuto: minuto ? Number(minuto[1]) : null,\n    status: minuto ? 'ao_vivo' : 'agendado',\n    updated_at: new Date()\n  }\n}];"
+      },
+      "name": "Parser Ao Vivo",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Cron 30s": {
+      "main": [
+        [
+          {
+            "node": "Detalhe Jogo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detalhe Jogo": {
+      "main": [
+        [
+          {
+            "node": "Parser Ao Vivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

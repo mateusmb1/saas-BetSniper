@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Central de Notificações</title>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2bee79",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#102217",
+                        "surface-dark": "#162e21", // Slightly lighter than background-dark for cards
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased selection:bg-primary selection:text-black">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-6">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm p-4 pb-2 transition-colors duration-300">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold leading-tight tracking-[-0.015em] text-gray-900 dark:text-white flex-1 text-center">
+                Notificações
+            </h1>
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full text-gray-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<!-- Filter Chips -->
+<div class="sticky top-[60px] z-40 bg-background-light dark:bg-background-dark w-full pt-2 pb-4 px-4 transition-colors duration-300 border-b border-gray-200 dark:border-white/5">
+<div class="flex gap-3 overflow-x-auto hide-scrollbar snap-x">
+<!-- Active Chip -->
+<button class="snap-start flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-5 shadow-sm shadow-primary/20 active:scale-95 transition-transform">
+<span class="text-background-dark text-sm font-bold leading-normal">Todos</span>
+</button>
+<!-- Inactive Chips -->
+<button class="snap-start flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5 px-5 active:scale-95 transition-transform">
+<span class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Sugestões IA</span>
+</button>
+<button class="snap-start flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5 px-5 active:scale-95 transition-transform">
+<span class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Resultados</span>
+</button>
+<button class="snap-start flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5 px-5 active:scale-95 transition-transform">
+<span class="text-gray-600 dark:text-gray-300 text-sm font-medium leading-normal">Alertas</span>
+</button>
+</div>
+</div>
+<!-- Content List -->
+<main class="flex-1 flex flex-col pt-2">
+<!-- Section: Hoje -->
+<div class="px-4 py-4">
+<h4 class="text-primary text-xs font-bold uppercase tracking-wider mb-3 ml-1">Hoje</h4>
+<div class="flex flex-col gap-3">
+<!-- Notification Item: Result (Win) -->
+<div class="group relative flex flex-col gap-3 bg-white dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-transparent hover:border-primary/30 transition-all active:scale-[0.99] cursor-pointer">
+<div class="flex justify-between items-start gap-4">
+<div class="flex gap-4">
+<!-- Unread Indicator -->
+<div class="absolute -top-1 -right-1 size-3 bg-primary rounded-full border-2 border-white dark:border-surface-dark"></div>
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">check_circle</span>
+</div>
+<div class="flex flex-1 flex-col">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-gray-900 dark:text-white text-base font-bold leading-snug">Green! Arsenal venceu</p>
+<span class="text-gray-400 dark:text-gray-500 text-xs font-medium ml-2 shrink-0">14:30</span>
+</div>
+<p class="text-gray-600 dark:text-gray-300 text-sm leading-normal line-clamp-2">
+                                        Sua aposta múltipla foi bem sucedida. Lucro total: <span class="text-primary font-bold">R$ 450,00</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Item: AI Suggestion -->
+<div class="group relative flex flex-col gap-3 bg-white dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-transparent hover:border-blue-400/30 transition-all active:scale-[0.99] cursor-pointer">
+<div class="flex justify-between items-start gap-4">
+<div class="flex gap-4 w-full">
+<!-- Unread Indicator -->
+<div class="absolute -top-1 -right-1 size-3 bg-primary rounded-full border-2 border-white dark:border-surface-dark"></div>
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-blue-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">smart_toy</span>
+</div>
+<div class="flex flex-1 flex-col w-full">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-gray-900 dark:text-white text-base font-bold leading-snug">Sugestão IA: Lakers vs Celtics</p>
+<span class="text-gray-400 dark:text-gray-500 text-xs font-medium ml-2 shrink-0">12:15</span>
+</div>
+<p class="text-gray-600 dark:text-gray-300 text-sm leading-normal">
+                                        Confiança Alta (89%): <span class="text-white bg-blue-500/20 px-1.5 py-0.5 rounded text-xs font-bold uppercase tracking-wide">Over 210.5</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Item: Live Game -->
+<div class="group relative flex flex-col gap-3 bg-white dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-transparent hover:border-yellow-400/30 transition-all active:scale-[0.99] cursor-pointer opacity-90">
+<div class="flex justify-between items-start gap-4">
+<div class="flex gap-4 w-full">
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-yellow-500/10 text-yellow-500">
+<span class="material-symbols-outlined">sports_soccer</span>
+</div>
+<div class="flex flex-1 flex-col w-full">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-gray-900 dark:text-white text-base font-semibold leading-snug">Início de Jogo</p>
+<span class="text-gray-400 dark:text-gray-500 text-xs font-medium ml-2 shrink-0">09:00</span>
+</div>
+<p class="text-gray-500 dark:text-gray-400 text-sm leading-normal">
+                                        Real Madrid vs Barcelona acabou de começar. Acompanhe as odds ao vivo.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Ontem -->
+<div class="px-4 py-2">
+<h4 class="text-gray-500 dark:text-gray-500 text-xs font-bold uppercase tracking-wider mb-3 ml-1">Ontem</h4>
+<div class="flex flex-col gap-3">
+<!-- Notification Item: Generic / Read -->
+<div class="group relative flex flex-col gap-3 bg-white/50 dark:bg-surface-dark/50 p-4 rounded-xl shadow-sm border border-transparent transition-all active:scale-[0.99] cursor-pointer">
+<div class="flex justify-between items-start gap-4">
+<div class="flex gap-4 w-full">
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-white/5 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined">notifications</span>
+</div>
+<div class="flex flex-1 flex-col w-full">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-gray-700 dark:text-gray-300 text-base font-medium leading-snug">Resumo Diário</p>
+<span class="text-gray-400 dark:text-gray-500 text-xs font-medium ml-2 shrink-0">18:00</span>
+</div>
+<p class="text-gray-500 dark:text-gray-500 text-sm leading-normal line-clamp-2">
+                                        Você acertou 4 de 5 palpites ontem. Veja seu desempenho detalhado.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Item: Alert / Read -->
+<div class="group relative flex flex-col gap-3 bg-white/50 dark:bg-surface-dark/50 p-4 rounded-xl shadow-sm border border-transparent transition-all active:scale-[0.99] cursor-pointer">
+<div class="flex justify-between items-start gap-4">
+<div class="flex gap-4 w-full">
+<div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-red-400">
+<span class="material-symbols-outlined">trending_down</span>
+</div>
+<div class="flex flex-1 flex-col w-full">
+<div class="flex justify-between items-baseline mb-1">
+<p class="text-gray-700 dark:text-gray-300 text-base font-medium leading-snug">Alerta de Odd</p>
+<span class="text-gray-400 dark:text-gray-500 text-xs font-medium ml-2 shrink-0">16:45</span>
+</div>
+<p class="text-gray-500 dark:text-gray-500 text-sm leading-normal line-clamp-2">
+                                        A odd para vitória do Flamengo caiu drasticamente para 1.45.
+                                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Placeholder (Visual only, hidden by default but good for design completeness if list was empty) -->
+<!-- 
+            <div class="flex flex-col items-center justify-center py-20 px-6 text-center hidden">
+                <div class="bg-surface-dark p-6 rounded-full mb-6">
+                    <span class="material-symbols-outlined text-gray-600 text-5xl">notifications_off</span>
+                </div>
+                <h3 class="text-white text-lg font-bold mb-2">Tudo limpo por aqui!</h3>
+                <p class="text-gray-500 text-sm max-w-xs mx-auto">Você leu todas as suas notificações. Avisaremos quando houver novas sugestões.</p>
+            </div>
+            -->
+<!-- Bottom Spacer for Tab Bar -->
+<div class="h-24"></div>
+</main>
+<!-- Floating Action Button (Optional Context: Mark all read) -->
+<div class="fixed bottom-6 right-6 z-50">
+<button class="flex items-center justify-center size-14 rounded-full bg-primary shadow-lg shadow-primary/30 text-background-dark active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-2xl">done_all</span>
+</button>
+</div>
+</div>
+</body></html>
