@@ -7,6 +7,7 @@
     "scripts": {
         "dev": "node --watch server.js",
         "start": "node server.js",
+        "sportdb": "node -e \"require('dotenv').config(); require('child_process').spawn('python', ['python_scraper/sportdb_scraper.py'], { stdio: 'inherit' })\"",
         "test": "node test.js"
     },
     "dependencies": {
