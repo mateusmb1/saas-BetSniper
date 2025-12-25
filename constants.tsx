@@ -16,6 +16,7 @@ const formatTime = (date: Date) => `${date.getHours().toString().padStart(2, '0'
 export const MOCK_MATCHES: Match[] = [
   {
     id: '1',
+    sport: 'football',
     league: 'Premier League',
     homeTeam: 'Arsenal',
     homeLogo: 'AR',
@@ -34,6 +35,7 @@ export const MOCK_MATCHES: Match[] = [
   },
   {
     id: '2',
+    sport: 'football',
     league: 'La Liga',
     homeTeam: 'Real Madrid',
     homeLogo: 'RM',
@@ -49,6 +51,7 @@ export const MOCK_MATCHES: Match[] = [
   },
   {
     id: '3',
+    sport: 'football',
     league: 'Bundesliga',
     homeTeam: 'Bayern',
     homeLogo: 'BM',
@@ -67,18 +70,38 @@ export const MOCK_MATCHES: Match[] = [
   },
   {
     id: '4',
-    league: 'Série A',
-    homeTeam: 'Juventus',
-    homeLogo: 'JUV',
-    awayTeam: 'Milan',
-    awayLogo: 'MIL',
-    time: formatTime(new Date(now.getTime() + 120 * 60000)), // Longe de começar
+    sport: 'basketball',
+    league: 'NBA',
+    homeTeam: 'Lakers',
+    homeLogo: 'LAL',
+    awayTeam: 'Warriors',
+    awayLogo: 'GSW',
+    time: formatTime(new Date(now.getTime() - 10 * 60000)), // Ao vivo
+    status: 'LIVE',
+    score: '85 - 82',
+    minute: 3,
+    minuteDisplay: 'Q3',
+    odd: 1.90,
+    aiConfidence: 65,
+    media_gols: 220,
+    forca_casa: 80,
+    forca_fora: 82
+  },
+  {
+    id: '5',
+    sport: 'tennis',
+    league: 'Wimbledon',
+    homeTeam: 'Alcaraz',
+    homeLogo: 'AL',
+    awayTeam: 'Djokovic',
+    awayLogo: 'DJ',
+    time: formatTime(new Date(now.getTime() + 60 * 60000)),
     status: 'SCHEDULED',
-    odd: 2.45,
-    aiConfidence: 55,
-    media_gols: 1.8,
-    forca_casa: 70,
-    forca_fora: 72
+    odd: 1.80,
+    aiConfidence: 50,
+    media_gols: 0,
+    forca_casa: 90,
+    forca_fora: 90
   }
 ];
 

@@ -14,6 +14,7 @@ export type AppScreen =
 
 export interface Match {
   id: string;
+  sport?: 'football' | 'basketball' | 'tennis' | 'hockey'; // Campo adicionado para suportar modalidades
   league: string;
   homeTeam: string;
   homeLogo: string;

@@ -118,7 +118,7 @@ const Dashboard: React.FC<DashboardProps> = ({ matches, unreadCount, onSelectMat
 
               <div className="flex flex-col items-center justify-center w-1/3">
                 <span className="text-3xl font-black tracking-tighter text-white">
-                  {match.status === 'SCHEDULED' ? 'VS' : match.score}
+                  {match.score ? match.score : 'VS'}
                 </span>
                 {match.status === 'LIVE' && match.minute && (
                   <span className="text-xs text-green-400 mt-1">{match.minute}'</span>

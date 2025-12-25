@@ -14,7 +14,7 @@ export class MatchService {
         // We use a window of 1 day to show relevant games (today and yesterday for context)
         const query = `
             SELECT 
-                id, league, home_team as "homeTeam", away_team as "awayTeam", 
+                id, league, sport, home_team as "homeTeam", away_team as "awayTeam", 
                 home_score as "homeScore", away_score as "awayScore",
                 status, is_live, match_url, home_logo as "homeLogo", away_logo as "awayLogo",
                 minute, TO_CHAR(date, 'HH24:MI') as time, date

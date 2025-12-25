@@ -24,7 +24,9 @@ const MatchDetail: React.FC<MatchDetailProps> = ({ match, onBack }) => {
 
       <div className="flex flex-col items-center px-4 pt-4 pb-6">
         <div className="mb-6 flex items-center gap-2 rounded-full bg-surface-dark px-3 py-1 border border-white/5">
-          <span className="text-[10px] font-bold text-text-secondary uppercase tracking-widest">{match.league}</span>
+          <span className="text-[10px] font-bold text-text-secondary uppercase tracking-widest">
+            {match.sport === 'basketball' ? '🏀' : match.sport === 'tennis' ? '🎾' : '⚽'} {match.league}
+          </span>
         </div>
 
         <div className="flex items-center justify-around py-8 mb-6 border-b border-white/10">

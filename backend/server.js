@@ -168,6 +168,55 @@ app.get('/api/matches', async (req, res) => {
 });
 
 /**
+ * GET /api/user/history - Buscar histórico de apostas
+ */
+app.get('/api/user/history', async (req, res) => {
+    const { user_id } = req.query;
+    if (!user_id) return res.status(400).json({ error: 'user_id is required' });
+    
+    try {
+        const history = await userService.getUserHistory(user_id);
+        res.json({ success: true, data: history });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+/**
+ * GET /api/user/notifications - Buscar notificações
+ */
+app.get('/api/user/notifications', async (req, res) => {
+    const { user_id } = req.query;
+    if (!user_id) return res.status(400).json({ error: 'user_id is required' });
+
+    try {
+        const notifications = await userService.getUserNotifications(user_id);
+        res.json({ success: true, data: notifications });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+/**
+ * POST /api/user/notifications/read - Marcar notificação como lida
+ */
+app.post('/api/user/notifications/read', async (req, res) => {
+    const { user_id, notification_id, all } = req.body;
+    if (!user_id) return res.status(400).json({ error: 'user_id is required' });
+
+    try {
+        if (all) {
+            await userService.markAllNotificationsAsRead(user_id);
+        } else if (notification_id) {
+            await userService.markNotificationAsRead(notification_id, user_id);
+        }
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+/**
  * POST /api/logos/scrape - Forçar atualização de logos
  */
 app.post('/api/logos/scrape', async (req, res) => {

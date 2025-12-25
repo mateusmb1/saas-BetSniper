@@ -50,6 +50,35 @@ export const apiClient = {
     },
 
     /**
+     * Buscar histórico de apostas do usuário
+     */
+    async getHistory(userId: string) {
+        const response = await fetch(`${API_BASE_URL}/user/history?user_id=${userId}`);
+        const data = await response.json();
+        return data.success ? data.data : [];
+    },
+
+    /**
+     * Buscar notificações do usuário
+     */
+    async getNotifications(userId: string) {
+        const response = await fetch(`${API_BASE_URL}/user/notifications?user_id=${userId}`);
+        const data = await response.json();
+        return data.success ? data.data : [];
+    },
+
+    /**
+     * Marcar notificação como lida
+     */
+    async markNotificationRead(userId: string, notificationId?: string, all: boolean = false) {
+        await fetch(`${API_BASE_URL}/user/notifications/read`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, notification_id: notificationId, all })
+        });
+    },
+
+    /**
      * Conectar WebSocket para atualizações em tempo real
      */
     connectWebSocket(onUpdate: (data: any[]) => void) {

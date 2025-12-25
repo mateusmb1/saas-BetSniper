@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { AppScreen, Match, Notification, BetHistoryItem } from './types';
 import { MOCK_MATCHES, MOCK_NOTIFICATIONS, MOCK_HISTORY } from './constants';
 import { apiClient } from './services/apiClient';
+import { supabase } from './services/supabase';
 import Onboarding from './screens/Onboarding';
 import LandingPage from './screens/LandingPage';
 import Login from './screens/Login';
@@ -14,6 +15,7 @@ import Ranking from './screens/Ranking';
 import Notifications from './screens/Notifications';
 import Profile from './screens/Profile';
 import BottomNav from './components/BottomNav';
+import Plans from './screens/Plans';
 
 // Configuração: true = usar backend real, false = usar dados MOCK
 const USE_BACKEND = true;
@@ -21,20 +23,43 @@ const USE_BACKEND = true;
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('LANDING');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
-  const [history] = useState<BetHistoryItem[]>(MOCK_HISTORY);
+  const [history, setHistory] = useState<BetHistoryItem[]>(MOCK_HISTORY);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [simulatorInitialData, setSimulatorInitialData] = useState<{ odd: number, prob: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Carregar dados do backend ou MOCK
+  // Check auth on mount
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setIsAuthenticated(true);
+        setUserId(session.user.id);
+        setCurrentScreen('DASHBOARD');
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+      setUserId(session?.user.id || null);
+      if (!session) setCurrentScreen('LOGIN');
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Carregar dados do backend
   useEffect(() => {
     if (USE_BACKEND) {
-      // Carregar dados iniciais do backend
       loadMatchesFromBackend();
+      
+      // Load user specific data if authenticated
+      if (userId) {
+        loadUserData(userId);
+      }
 
-      // Conectar WebSocket para atualizações em tempo real
       const ws = apiClient.connectWebSocket((updatedMatches) => {
         console.log('📡 Dados atualizados via WebSocket:', updatedMatches.length, 'jogos');
         setMatches(updatedMatches);
@@ -42,40 +67,50 @@ const App: React.FC = () => {
 
       return () => ws.close();
     } else {
-      // Usar dados MOCK
       setMatches(MOCK_MATCHES);
       setIsLoading(false);
     }
-  }, []);
+  }, [userId]); // Reload if userId changes
+
+  const loadUserData = async (uid: string) => {
+      try {
+          const [historyData, notificationsData] = await Promise.all([
+              apiClient.getHistory(uid),
+              apiClient.getNotifications(uid)
+          ]);
+          if (historyData && historyData.length > 0) setHistory(historyData);
+          if (notificationsData && notificationsData.length > 0) setNotifications(notificationsData);
+      } catch (error) {
+          console.error('Error loading user data:', error);
+      }
+  };
 
   const loadMatchesFromBackend = async () => {
     try {
       console.log('🔄 Carregando jogos do backend...');
       const data = await apiClient.getMatches();
       console.log('✅ Jogos carregados:', data.length);
-      setMatches(data);
+      if (data.length > 0) {
+          setMatches(data);
+      } else {
+          // If backend returns empty (e.g. initial load), keep mock or empty?
+          // User wants real data, so let's show empty or cached if available.
+          // For now, if 0, maybe fallback to MOCK if dev environment?
+          // But user said "everything stored there".
+          // Let's assume if 0 matches, it's 0 matches.
+          // Unless we want to keep MOCK as fallback for demo purposes if backend is empty.
+          // The user complained about missing data, so showing MOCKs might be confusing if they differ from DB.
+          // Let's stick to backend data.
+          setMatches(data);
+      }
     } catch (error) {
       console.error('❌ Erro ao carregar jogos:', error);
-      // Fallback para MOCK se falhar
       setMatches(MOCK_MATCHES);
     } finally {
       setIsLoading(false);
     }
   };
 
-  useEffect(() => {
-    // Limpar hasSeenOnboarding antigo para forçar a Landing Page neste momento de dev
-    // localStorage.removeItem('hasSeenOnboarding'); // Opcional: descomentar se quiser resetar sempre
-
-    const auth = localStorage.getItem('isAuth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-      setCurrentScreen('DASHBOARD');
-    } else {
-      // Se não estiver logado, SEMPRE vai para a Landing Page primeiro
-      setCurrentScreen('LANDING');
-    }
-  }, []);
 
   const handleNavigate = (screen: AppScreen, data?: any) => {
     if (screen === 'MATCH_DETAIL' && data) setSelectedMatch(data);
