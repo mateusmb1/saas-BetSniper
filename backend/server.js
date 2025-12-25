@@ -300,6 +300,11 @@ wss.on('connection', async (ws) => {
     });
 });
 
+import { spawn } from 'child_process';
+import path from 'path';
+
+// ... (existing imports)
+
 // ==================== START SERVER ====================
 
 const server = app.listen(PORT, () => {
@@ -312,6 +317,24 @@ const server = app.listen(PORT, () => {
 
     // Executar coleta inicial
     console.log('🔄 Executando coleta inicial de dados (ESPN + Deep Scraper)...\n');
+
+    // START SPORTDB SCRAPER IF KEY IS PRESENT
+    if (process.env.SPORTDB_API_KEY) {
+        console.log('🚀 Iniciando SportDB Scraper (Python Process)...');
+        const pythonProcess = spawn('python', ['python_scraper/sportdb_scraper.py'], {
+            cwd: process.cwd(),
+            stdio: 'inherit' // Pipe output to parent process
+        });
+        
+        pythonProcess.on('error', (err) => {
+            console.error('❌ Falha ao iniciar SportDB Scraper:', err);
+        });
+        
+        // Ensure python process is killed when node exits
+        process.on('exit', () => pythonProcess.kill());
+    } else {
+        console.log('⚠️  SPORTDB_API_KEY não encontrada. O scraper SportDB não será iniciado automaticamente.');
+    }
 
     // Disparar ambos em paralelo
     Promise.allSettled([
