@@ -1,0 +1,75 @@
+🔽 JSON PARA IMPORTAR NO N8N/ automação.
+
+No n8n:
+Menu → Import Workflow → Paste JSON
+
+{
+  "name": "FS_Jogos_Do_Dia",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 7,
+              "minute": 0
+            }
+          ]
+        }
+      },
+      "name": "Cron",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://d.flashscore.com/x/feed/f_1_0_pt_1",
+        "options": {
+          "headers": {
+            "X-Fsign": "SW9D1eZo",
+            "User-Agent": "Mozilla/5.0",
+            "Referer": "https://www.flashscore.pt/"
+          }
+        }
+      },
+      "name": "Flashscore Feed",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const raw = JSON.stringify($json);\nconst clean = raw.replace(/¬/g,'').replace(/÷/g,':').replace(/~/g,',');\nconst regex = /([A-Z0-9]{8}):([A-Za-z\\s]+):([A-Za-z\\s]+)/g;\nconst jogos = [];\nlet m;\nwhile ((m = regex.exec(clean)) !== null) {\n  jogos.push({\n    id: m[1],\n    time_casa: m[2].trim(),\n    time_fora: m[3].trim(),\n    status: 'agendado',\n    created_at: new Date()\n  });\n}\nreturn jogos.map(j => ({ json: j }));"
+      },
+      "name": "Parser Jogos",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Cron": {
+      "main": [
+        [
+          {
+            "node": "Flashscore Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flashscore Feed": {
+      "main": [
+        [
+          {
+            "node": "Parser Jogos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,189 @@
+🔐 PASSO 4 — SISTEMA DE LOGIN + PLANOS (SAAS PROFISSIONAL)
+
+Você vai usar o que o Supabase faz melhor:
+
+Auth
+
+Segurança
+
+Controle de acesso
+
+Base para monetização
+
+Nada reinventado.
+
+🧩 ARQUITETURA GERAL
+[Frontend]
+   ↓
+Supabase Auth (Login / Signup)
+   ↓
+Tabela profiles (plano, status)
+   ↓
+Policies (RLS)
+   ↓
+API / Queries filtradas
+
+✅ ETAPA 4.1 — AUTENTICAÇÃO (SUPABASE AUTH)
+1️⃣ Ativar Auth
+
+No Supabase:
+
+Vá em Authentication
+
+Providers:
+
+✅ Email
+
+(opcional depois: Google)
+
+Configurações:
+
+Confirm email: ON
+
+Secure password: ON
+
+2️⃣ Fluxos de usuário
+🟢 Signup
+
+Email
+
+Senha
+
+Confirmação por email
+
+🔵 Login
+
+Email + senha
+
+Retorna user.id (UUID)
+
+Esse user.id será a chave do seu SaaS.
+
+✅ ETAPA 4.2 — TABELA DE PERFIL + PLANOS
+
+Agora vamos ligar usuário → plano.
+
+📌 Criar tabela profiles
+
+No SQL Editor:
+
+CREATE TABLE profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id),
+  email TEXT,
+  plano TEXT DEFAULT 'free',
+  status TEXT DEFAULT 'ativo',
+  criado_em TIMESTAMP DEFAULT now()
+);
+
+3️⃣ Criar trigger automático (IMPORTANTE)
+
+Toda vez que um usuário se cadastrar, o perfil nasce automaticamente.
+
+CREATE OR REPLACE FUNCTION handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO profiles (id, email)
+  VALUES (NEW.id, NEW.email);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER on_auth_user_created
+AFTER INSERT ON auth.users
+FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+
+
+👉 Isso é padrão SaaS profissional.
+
+✅ ETAPA 4.3 — DEFINIR PLANOS DO SEU SAAS
+
+Vamos usar planos simples e escaláveis.
+
+Plano	Acesso
+free	3 sugestões/dia
+pro	sugestões ilimitadas + simulador
+elite	IA avançada + alertas
+📌 Atualizar plano do usuário
+
+Exemplo:
+
+UPDATE profiles
+SET plano = 'pro'
+WHERE id = 'USER_UUID';
+
+
+Isso depois será feito via pagamento.
+
+✅ ETAPA 4.4 — SEGURANÇA (RLS – MUITO IMPORTANTE)
+
+Sem isso, não é SaaS.
+
+🔒 Ativar RLS
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE predictions ENABLE ROW LEVEL SECURITY;
+
+🔐 Policy: usuário só vê o que pode
+Profiles
+CREATE POLICY "Usuário vê seu perfil"
+ON profiles
+FOR SELECT
+USING (auth.uid() = id);
+
+Predictions — limitar FREE
+
+Exemplo (FREE só vê score ≥ 80):
+
+CREATE POLICY "Free limitado"
+ON predictions
+FOR SELECT
+USING (
+  EXISTS (
+    SELECT 1 FROM profiles
+    WHERE profiles.id = auth.uid()
+    AND (
+      profiles.plano IN ('pro','elite')
+      OR score >= 80
+    )
+  )
+);
+
+
+🔥 Isso automaticamente limita o acesso, sem lógica no front.
+
+✅ ETAPA 4.5 — CONTROLE DE USO (FREE)
+
+Para limitar 3 sugestões/dia, temos duas opções:
+
+OPÇÃO PROFISSIONAL (recomendada)
+
+Criar tabela de uso:
+
+CREATE TABLE usage_daily (
+  user_id UUID,
+  data DATE,
+  consultas INT DEFAULT 0,
+  PRIMARY KEY (user_id, data)
+);
+
+
+A cada consulta:
+
+incrementa consultas
+
+bloqueia se > 3 (FREE)
+
+Isso pode ser feito:
+
+via Edge Function
+
+ou via API Backend
+
+🧠 O QUE VOCÊ GANHOU ATÉ AQUI
+
+✅ Login profissional
+✅ Controle de planos
+✅ Segurança real (RLS)
+✅ Base para cobrança
+✅ SaaS escalável
+
+Você agora não tem mais um projeto, tem um produto.

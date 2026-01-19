@@ -1,0 +1,67 @@
+# 🛠️ Especificação Técnica: Implementação no Google Sites
+
+**Plataforma:** Google Sites (Hospedagem Gratuita/Baixo Custo)
+**Domínio:** Personalizado (ex: www.futebolia.com)
+
+---
+
+## 1. Arquitetura da Informação
+O Google Sites é estático. Para atender Brasil e Europa, usaremos uma estrutura de **Roteamento Manual** ou **Abas**.
+
+### Estrutura de Páginas
+1.  **Home (/)**: Página "Splash" ou Global.
+    *   Detecta idioma do navegador (via Script Embed) ou oferece botões claros: 🇧🇷 Brasil | 🇪🇺 Europa.
+2.  **Versão BR (/br)**: Landing page completa em PT-BR com preços em Reais.
+3.  **Versão EU (/eu)**: Landing page em PT-PT (adaptável para ES via tradutor ou sub-página /es) com preços em Euro.
+
+## 2. Implementação de Componentes (Workarounds)
+
+### A. Botões de Compra Regionalizados
+Como o Google Sites não tem banco de dados, os botões de compra serão links diretos para checkouts diferentes.
+*   **Página /br**: Botão "Assinar Premium" -> Link Checkout Stripe/Mercado Pago (Configurado em BRL).
+*   **Página /eu**: Botão "Assinar Premium" -> Link Checkout Stripe (Configurado em EUR).
+
+### B. Widget de Preços (HTML Embed)
+Para uma experiência mais fluida, podemos usar um "Embed Code" no Google Sites para criar um *toggle* de preços visual, mesmo que a página seja estática.
+
+**Código Sugerido (Embed HTML):**
+```html
+<div class="pricing-toggle">
+  <button onclick="showPrice('br')">🇧🇷 Brasil</button>
+  <button onclick="showPrice('eu')">🇪🇺 Europa</button>
+</div>
+<div id="price-br" class="price-card">
+  <h3>Plano Pro</h3>
+  <p class="amount">R$ 29,90<span>/mês</span></p>
+  <a href="LINK_CHECKOUT_BRL" class="btn">Assinar Agora</a>
+</div>
+<div id="price-eu" class="price-card" style="display:none">
+  <h3>Plano Pro</h3>
+  <p class="amount">€ 9,90<span>/mês</span></p>
+  <a href="LINK_CHECKOUT_EUR" class="btn">Assinar Agora</a>
+</div>
+<script>
+function showPrice(region) {
+  document.getElementById('price-br').style.display = region === 'br' ? 'block' : 'none';
+  document.getElementById('price-eu').style.display = region === 'eu' ? 'block' : 'none';
+}
+</script>
+```
+
+### C. SEO Internacional (Limitação do Google Sites)
+O Google Sites tem limitações para tags `hreflang`.
+*   **Solução:** Focar em SEO On-Page. Títulos claros "Software de Análise de Futebol - Brasil" na página BR.
+*   **Meta Tags:** Preencher cuidadosamente as "Configurações da Página" > "Caminho personalizado" e "Descrição".
+
+---
+
+## 3. Integrações Necessárias
+1.  **Google Analytics 4:** Configurar fluxos de dados separados ou usar filtros por URL (/br vs /eu).
+2.  **Pixel do Facebook/Ads:** Inserir via "Embed Code" no <head> (Configurações do Site > Código Personalizado).
+3.  **Chat/Suporte:** Widget do WhatsApp (Flutuante).
+    *   *Script:* Usar um gerador de link de WhatsApp com mensagem pré-definida ("Olá, vi o site e quero saber mais").
+
+## 4. Performance e Mobile
+*   O Google Sites é nativamente responsivo.
+*   **Cuidado:** Evitar imagens pesadas (>200KB) no topo. Usar formato WebP se possível, ou JPG comprimido.
+*   **Teste:** Verificar se o Embed de preços não "quebra" em telas menores que 320px (iPhone SE).

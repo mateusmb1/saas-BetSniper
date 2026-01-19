@@ -1,0 +1,411 @@
+📊 Estrutura Identificada
+Campeonatos Disponíveis:
+Internacionais:
+
+Brasileirão – Série A, B, C
+
+Primeira Divisão Argentina
+
+Campeonato Alemão-Bundesliga
+
+Campeonato Espanhol – LaLiga
+
+Campeonato Francês – Ligue 1
+
+Campeonato Inglês – Premiere League
+
+Campeonato Italiano – Série A TIM
+
+Regionais Brasil:
+
+Paulistão – Série A1
+
+Cariocão – Série A
+
+Mineirão –. Eu
+
+Países:
+Brasil, Espanha, Inglaterra, Alemanha, Itália, França, Argentina, Canadá, Chile, Colômbia, Estados Unidos, Japão, México, Paraguai, Portugal, Uruguai
+
+Estrutura das URLs:
+Páginas de campeonatos:https://logodetimes.com/{campeonato}/
+
+Páginas de tempos individuais com logotipos em várias resoluções
+​
+
+Links de download codificados em base64
+​
+
+🐍 Script Python Completo
+Python
+import requests
+from bs4 import BeautifulSoup
+import base64
+import json
+import time
+import os
+from urllib.parse import urljoin
+import sqlite3
+
+class LogoTimesExtractor:
+    def __init__(self, db_name='team_logos.db'):
+        self.base_url = 'https://logodetimes.com'
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        })
+        self.setup_database(db_name)
+    
+    def setup_database(self, db_name):
+        """Cria estrutura do banco de dados"""
+        self.conn = sqlite3.connect(db_name)
+        self.cursor = self.conn.cursor()
+        
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS teams (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                team_name TEXT NOT NULL,
+                country TEXT,
+                league TEXT,
+                team_url TEXT UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS logos (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                team_id INTEGER,
+                logo_url TEXT,
+                resolution TEXT,
+                file_path TEXT,
+                downloaded BOOLEAN DEFAULT 0,
+                FOREIGN KEY (team_id) REFERENCES teams (id)
+            )
+        ''')
+        
+        self.conn.commit()
+    
+    # Mapeamento de campeonatos
+    CHAMPIONSHIPS = {
+        'Brasil': {
+            'Brasileirão – Série A': '/brasileirao-serie-a/',
+            'Brasileirão – Série B': '/brasileirao-serie-b/',
+            'Brasileirão – Série C': '/brasileirao-serie-c/',
+            'Paulistão – Série A1': '/paulistao-serie-a1/',
+            'Cariocão – Série A': '/cariocao-serie-a/',
+            'Mineirão – Módulo I': '/mineirao-modulo-i/'
+        },
+        'Espanha': {
+            'La Liga': '/times-la-liga/'
+        },
+        'Inglaterra': {
+            'Premier League': '/times-premiere-league/'
+        },
+        'Alemanha': {
+            'Bundesliga': '/times-bundesliga/'
+        },
+        'França': {
+            'Ligue 1': '/times-ligue-1/'
+        },
+        'Itália': {
+            'Serie A TIM': '/times-serie-a-tim/'
+        },
+        'Argentina': {
+            'Primera División': '/primeira-division-argentina/'
+        }
+    }
+    
+    def get_championship_teams(self, championship_url, country, league):
+        """Extrai todos os times de um campeonato"""
+        print(f"🔍 Extraindo times de {league} ({country})...")
+        teams = []
+        page = 1
+        
+        while True:
+            url = f"{self.base_url}{championship_url}"
+            if page > 1:
+                url += f"page/{page}/"
+            
+            try:
+                response = self.session.get(url, timeout=10)
+                if response.status_code != 200:
+                    break
+                
+                soup = BeautifulSoup(response.content, 'html.parser')
+                
+                # Encontra todos os links para páginas de times
+                team_links = soup.select('main#main article h3 a, main#main h3 a')
+                
+                if not team_links:
+                    break
+                
+                for link in team_links:
+                    team_name = link.get_text(strip=True)
+                    team_url = link.get('href')
+                    
+                    teams.append({
+                        'name': team_name,
+                        'url': team_url,
+                        'country': country,
+                        'league': league
+                    })
+                
+                print(f"  ✓ Página {page}: {len(team_links)} times encontrados")
+                
+                # Verifica se há próxima página
+                next_page = soup.select_one('a[rel="next"]')
+                if not next_page:
+                    break
+                
+                page += 1
+                time.sleep(1)  # Rate limiting
+                
+            except Exception as e:
+                print(f"  ❌ Erro na página {page}: {e}")
+                break
+        
+        return teams
+    
+    def decode_download_url(self, encoded_url):
+        """Decodifica URL base64 do link de download"""
+        try:
+            decoded = base64.b64decode(encoded_url).decode('utf-8')
+            parts = decoded.split('|')
+            if len(parts) > 0:
+                return parts[0]  # URL da imagem PNG
+        except:
+            pass
+        return None
+    
+    def extract_team_logos(self, team_url, team_id):
+        """Extrai todas as logos de um time específico"""
+        logos = []
+        
+        try:
+            response = self.session.get(team_url, timeout=10)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Encontra tabela com logos
+            logo_cells = soup.select('table td a[href*="/download/"]')
+            
+            for logo_link in logo_cells:
+                href = logo_link.get('href', '')
+                if 'time=' in href:
+                    # Extrai o parâmetro base64
+                    encoded = href.split('time=')[1]
+                    logo_url = self.decode_download_url(encoded)
+                    
+                    if logo_url:
+                        # Extrai resolução do nome do arquivo
+                        resolution = 'unknown'
+                        if '-4096.png' in logo_url:
+                            resolution = '4096x4096'
+                        elif '-2048.png' in logo_url:
+                            resolution = '2048x2048'
+                        elif '-1536.png' in logo_url:
+                            resolution = '1536x1536'
+                        elif '-1024.png' in logo_url:
+                            resolution = '1024x1024'
+                        elif '-512.png' in logo_url:
+                            resolution = '512x512'
+                        elif '-256.png' in logo_url:
+                            resolution = '256x256'
+                        
+                        logos.append({
+                            'team_id': team_id,
+                            'logo_url': logo_url,
+                            'resolution': resolution
+                        })
+            
+            time.sleep(0.5)  # Rate limiting
+            
+        except Exception as e:
+            print(f"    ❌ Erro ao extrair logos: {e}")
+        
+        return logos
+    
+    def save_team_to_db(self, team):
+        """Salva time no banco de dados"""
+        try:
+            self.cursor.execute('''
+                INSERT OR IGNORE INTO teams (team_name, country, league, team_url)
+                VALUES (?, ?, ?, ?)
+            ''', (team['name'], team['country'], team['league'], team['url']))
+            
+            self.conn.commit()
+            
+            # Retorna o ID do time
+            self.cursor.execute('SELECT id FROM teams WHERE team_url = ?', (team['url'],))
+            return self.cursor.fetchone()[0]
+            
+        except Exception as e:
+            print(f"    ❌ Erro ao salvar time: {e}")
+            return None
+    
+    def save_logos_to_db(self, logos):
+        """Salva logos no banco de dados"""
+        try:
+            for logo in logos:
+                self.cursor.execute('''
+                    INSERT INTO logos (team_id, logo_url, resolution)
+                    VALUES (?, ?, ?)
+                ''', (logo['team_id'], logo['logo_url'], logo['resolution']))
+            
+            self.conn.commit()
+            
+        except Exception as e:
+            print(f"    ❌ Erro ao salvar logos: {e}")
+    
+    def download_logo(self, logo_url, save_path):
+        """Baixa a imagem da logo"""
+        try:
+            response = self.session.get(logo_url, timeout=15)
+            if response.status_code == 200:
+                os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                with open(save_path, 'wb') as f:
+                    f.write(response.content)
+                return True
+        except Exception as e:
+            print(f"    ❌ Erro ao baixar {logo_url}: {e}")
+        return False
+    
+    def extract_all(self, download_images=False):
+        """Extração completa de todos os campeonatos"""
+        print("🚀 Iniciando extração completa...\n")
+        
+        total_teams = 0
+        total_logos = 0
+        
+        for country, championships in self.CHAMPIONSHIPS.items():
+            print(f"\n{'='*60}")
+            print(f"🌍 PAÍS: {country}")
+            print(f"{'='*60}\n")
+            
+            for league, url in championships.items():
+                teams = self.get_championship_teams(url, country, league)
+                
+                print(f"\n  📋 {len(teams)} times encontrados em {league}")
+                
+                for idx, team in enumerate(teams, 1):
+                    print(f"  [{idx}/{len(teams)}] {team['name']}")
+                    
+                    # Salva time no BD
+                    team_id = self.save_team_to_db(team)
+                    
+                    if team_id:
+                        # Extrai logos
+                        logos = self.extract_team_logos(team['url'], team_id)
+                        
+                        if logos:
+                            self.save_logos_to_db(logos)
+                            print(f"    ✓ {len(logos)} logos extraídas")
+                            total_logos += len(logos)
+                            
+                            # Download opcional
+                            if download_images:
+                                for logo in logos:
+                                    filename = f"{country}/{league}/{team['name']}/{logo['resolution']}.png"
+                                    filename = filename.replace(' ', '_').replace('/', '_')
+                                    save_path = f"logos/{filename}"
+                                    
+                                    if self.download_logo(logo['logo_url'], save_path):
+                                        self.cursor.execute('''
+                                            UPDATE logos 
+                                            SET file_path = ?, downloaded = 1 
+                                            WHERE logo_url = ?
+                                        ''', (save_path, logo['logo_url']))
+                                        self.conn.commit()
+                        
+                        total_teams += 1
+                
+                time.sleep(2)  # Pausa entre campeonatos
+        
+        print(f"\n{'='*60}")
+        print(f"✅ EXTRAÇÃO CONCLUÍDA!")
+        print(f"{'='*60}")
+        print(f"📊 Total de times: {total_teams}")
+        print(f"🖼️  Total de logos: {total_logos}")
+        print(f"💾 Dados salvos em: {self.conn}")
+    
+    def export_to_json(self, filename='team_logos.json'):
+        """Exporta dados para JSON"""
+        self.cursor.execute('''
+            SELECT t.team_name, t.country, t.league, t.team_url,
+                   l.logo_url, l.resolution, l.file_path
+            FROM teams t
+            LEFT JOIN logos l ON t.id = l.team_id
+        ''')
+        
+        data = {}
+        for row in self.cursor.fetchall():
+            team_name = row[0]
+            if team_name not in data:
+                data[team_name] = {
+                    'name': row[0],
+                    'country': row[1],
+                    'league': row[2],
+                    'url': row[3],
+                    'logos': []
+                }
+            
+            if row[4]:  # Se tem logo
+                data[team_name]['logos'].append({
+                    'url': row[4],
+                    'resolution': row[5],
+                    'file_path': row[6]
+                })
+        
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(list(data.values()), f, ensure_ascii=False, indent=2)
+        
+        print(f"📄 Dados exportados para: {filename}")
+    
+    def close(self):
+        """Fecha conexão com banco"""
+        self.conn.close()
+
+
+# ========== USO ==========
+if __name__ == '__main__':
+    extractor = LogoTimesExtractor('team_logos.db')
+    
+    # Extração completa (sem download das imagens)
+    extractor.extract_all(download_images=False)
+    
+    # Exportar para JSON
+    extractor.export_to_json('team_logos.json')
+    
+    # Se quiser baixar as imagens também:
+    # extractor.extract_all(download_images=True)
+    
+    extractor.close()
+🎯 Como Funciona:
+Navega por todos os campeonatos definidos no dicionárioCHAMPIONSHIPS
+
+Para cada campeonato , extrai todos os tempos (com paginação)
+
+Para cada vez , acesse a página individual e extrai:
+
+Nome do tempo
+
+País
+
+Campeonato
+
+URLs de todas as resoluções de logotipo (256x256 até 4096x4096)
+
+Decodificar URLs base64 dos links de download
+​
+
+Salva no SQLite com estrutura relacional
+
+Opcionalmente baixa como imagens PNG
+
+📦 Estrutura do Banco de Dados:
+SQL
+-- Tabela teams
+- id, team_name, country, league, team_url
+
+-- Tabela logos  
+- id, team_id, logo_url, resolution, file_path, downloaded

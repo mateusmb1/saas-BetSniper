@@ -1,0 +1,37 @@
+# 💰 Matriz de Preços e Estratégia Regional
+
+**Objetivo:** Maximizar receita considerando o poder de compra (PPP) de cada região.
+
+---
+
+## 1. Matriz de Preços (Pricing Matrix)
+
+| Plano | Brasil (BRL) | Portugal/Espanha (EUR) | Conversão Aprox. | Justificativa |
+| :--- | :--- | :--- | :--- | :--- |
+| **Mensal** | **R$ 29,90** | **€ 9,90** | €9,90 ≈ R$ 55,00 | O mercado europeu aceita um ticket base maior. R$ 29,90 é um preço psicológico forte no BR ("menos de 1 real por dia"). |
+| **Trimestral** | **R$ 79,90** | **€ 24,90** | Desconto ~10% | Incentiva compromisso de médio prazo. |
+| **Anual** | **R$ 299,00** | **€ 89,90** | 2 Meses Grátis | Melhor para fluxo de caixa imediato. |
+
+*Nota: Preços sugeridos baseados em concorrentes de SaaS B2C (Tipstrr, Blogabet, Flashscore PRO).*
+
+---
+
+## 2. Adaptações Culturais e Legais
+
+### Brasil 🇧🇷
+*   **Pagamento:** OBRIGATÓRIO ter **PIX**. O checkout deve priorizar Pix.
+*   **Parcelamento:** Oferecer parcelamento no cartão de crédito (cultura local forte de parcelar até valores baixos).
+*   **Legal:** Termos de Uso devem deixar claro que é uma "ferramenta de análise", NÃO um "site de apostas" (para evitar bloqueios do Google Ads).
+
+### Portugal 🇵🇹 / Espanha 🇪🇸
+*   **Pagamento:** Cartão de Crédito (Visa/Master), PayPal e **Multibanco/MB Way** (Essencial para PT).
+*   **IVA/VAT:** Se a empresa for sediada na Europa, adicionar IVA. Se for venda internacional (Software), verificar isenção ou Reverse Charge.
+*   **GDPR:** Banner de Cookies OBRIGATÓRIO e rigoroso. Checkbox de "Aceito receber marketing" deve vir *desmarcada* por padrão.
+
+---
+
+## 3. Gateway de Pagamento Sugerido
+Recomendo usar um intermediador que gerencie o câmbio automaticamente ou criar duas contas/produtos.
+*   **Stripe:** Melhor opção técnica. Permite criar links de pagamento em moedas diferentes.
+*   **Hotmart/Eduzz:** Opção mais fácil para BR, mas taxas mais altas. Gerencia afiliados (bom para crescimento).
+*   **Recomendação:** **Stripe** pela integração limpa e menores taxas, com checkout personalizado.

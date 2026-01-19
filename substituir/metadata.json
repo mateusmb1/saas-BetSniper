@@ -1,0 +1,7 @@
+{
+  "name": "SaaS Bet Analytics",
+  "description": "A high-performance sports betting analytics dashboard featuring AI-driven insights, match simulations, and real-time performance tracking.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

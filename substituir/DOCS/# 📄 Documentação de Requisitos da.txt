@@ -1,0 +1,70 @@
+# 📄 Documentação de Requisitos da Landing Page: Futebol IA SaaS
+
+**Versão:** 1.0  
+**Data:** 25/12/2025  
+**Responsável:** Product Manager / Lead Copywriter
+
+---
+
+## 1. Visão Geral e Objetivos
+**Produto:** Plataforma SaaS de Análise de Futebol com IA e Dados em Tempo Real (Integração ESPN/Flashscore).  
+**Objetivo Primário:** Conversão de visitantes em assinantes recorrentes (MRR).  
+**Objetivo Secundário:** Captura de leads (newsletter/grupo telegram) para nutrir indecisos.
+
+### Metas de Conversão por Mercado
+*   **Brasil (BR):** Foco em volume. Ticket médio mais baixo, alta conversão.
+    *   *Apelo:* "Renda Extra", "Assertividade", "Sair na frente das casas de aposta".
+*   **Portugal/Espanha (PT/ES):** Foco em qualidade/LTV (Lifetime Value).
+    *   *Apelo:* "Investimento Profissional", "Dados Precisos", "Ferramenta de Análise Técnica".
+
+---
+
+## 2. Estrutura da Página e Elementos Obrigatórios
+
+A Landing Page deve seguir a estrutura **AIDA** (Atenção, Interesse, Desejo, Ação).
+
+### Seção 1: Hero (Dobra Superior)
+*   **Headline (Título):** Deve atacar a "dor" principal (perder dinheiro por falta de dados).
+    *   *Opção A (Agressiva):* "Pare de Apostar na Sorte. Comece a Investir com Inteligência Artificial."
+    *   *Opção B (Técnica):* "A Maior Cobertura de Dados de Futebol do Mundo. Agora com IA."
+*   **Sub-headline:** "Receba insights em tempo real, probabilidades calculadas por IA e alertas de gols antes das casas de apostas. Integração oficial com dados globais."
+*   **CTA Principal (Call to Action):**
+    *   *Botão:* "Testar Grátis Agora" (ou "Ver Planos e Preços").
+    *   *Microcopy:* "Sem cartão de crédito para demonstração."
+*   **Visual:** Screenshot ou GIF do Dashboard (fundo escuro, dados "piscando" em verde, gráficos de IA).
+
+### Seção 2: Prova Social e Autoridade
+*   **Logos:** "Dados fornecidos por fontes confiáveis" (Ícones estilizados remetendo a ESPN/Flashscore, sem violar TM se possível, ou usar "Tecnologia de Dados Globais").
+*   **Números:** "+1.000 jogos analisados por semana", "94% de precisão nos alertas de tendência".
+
+### Seção 3: Benefícios (O "Como Funciona")
+Focar nos diferenciais técnicos que já desenvolvemos:
+1.  **Scanner em Tempo Real:** "Monitore centenas de jogos simultaneamente. Nossa IA avisa onde está a oportunidade."
+2.  **Inteligência Artificial Preditiva:** "Algoritmos que analisam histórico, momento e pressão do jogo para prever o próximo gol."
+3.  **Cobertura Global:** "Da Champions League à Série B do Brasil. Se tem bola rolando, nós estamos analisando."
+
+### Seção 4: Pricing (Precificação Regionalizada)
+*   *Ver documento técnico para implementação do seletor.*
+*   Deve mostrar claramente o valor mensal e o desconto anual.
+
+### Seção 5: FAQ e Rodapé
+*   Perguntas sobre cancelamento, métodos de pagamento e garantia.
+
+---
+
+## 3. Diretrizes de Copywriting por Região
+
+| Elemento | Brasil (PT-BR) | Portugal (PT-PT) | Espanha (ES) |
+| :--- | :--- | :--- | :--- |
+| **Tom de Voz** | Entusiasta, direto, focado em ganho rápido. | Profissional, analítico, focado em consistência. | Enérgico, técnico, focado em paixão e tática. |
+| **Palavra-chave** | "Green", "Lucro", "Banca". | "Rentabilidade", "Análise", "Yield". | "Beneficio", "Estadísticas", "Apuesta Segura". |
+| **CTA** | "Quero lucrar agora" | "Começar análise profissional" | "Empezar prueba gratis" |
+| **Objeção** | "É golpe?" -> Focar em transparência e teste grátis. | "Funciona mesmo?" -> Focar em dados técnicos. | "Es caro?" -> Focar no ROI (Retorno). |
+
+---
+
+## 4. Fluxo de Conversão
+1.  **Entrada:** Tráfego Pago (Instagram/Google) ou Orgânico.
+2.  **Landing Page:** Usuário escolhe região (ou detectamos auto) -> Vê Preço.
+3.  **Checkout:** Página de pagamento segura (Stripe/Hotmart/Eduzz).
+4.  **Onboarding:** Acesso imediato ao Dashboard + Link para Grupo VIP (Telegram/Discord).
