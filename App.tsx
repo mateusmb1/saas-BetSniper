@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { AppScreen, Match, Notification, BetHistoryItem } from './types';
 import { MOCK_MATCHES, MOCK_NOTIFICATIONS, MOCK_HISTORY } from './constants';
@@ -55,7 +54,6 @@ const App: React.FC = () => {
     if (USE_BACKEND) {
       loadMatchesFromBackend();
       
-      // Load user specific data if authenticated
       if (userId) {
         loadUserData(userId);
       }
@@ -70,18 +68,19 @@ const App: React.FC = () => {
       setMatches(MOCK_MATCHES);
       setIsLoading(false);
     }
-  }, [userId]); // Reload if userId changes
+  }, [userId]);
 
   const loadUserData = async (uid: string) => {
       try {
-          const [historyData, notificationsData] = await Promise.all([
-              apiClient.getHistory(uid),
-              apiClient.getNotifications(uid)
-          ]);
-          if (historyData && historyData.length > 0) setHistory(historyData);
-          if (notificationsData && notificationsData.length > 0) setNotifications(notificationsData);
+        const [historyData, notificationsData] = await Promise.all([
+          apiClient.getHistory(uid),
+          apiClient.getNotifications(uid)
+        ]);
+
+        if (historyData && historyData.length > 0) setHistory(historyData);
+        if (notificationsData && notificationsData.length > 0) setNotifications(notificationsData);
       } catch (error) {
-          console.error('Error loading user data:', error);
+        console.error('Error loading user data:', error);
       }
   };
 
@@ -91,17 +90,9 @@ const App: React.FC = () => {
       const data = await apiClient.getMatches();
       console.log('✅ Jogos carregados:', data.length);
       if (data.length > 0) {
-          setMatches(data);
+        setMatches(data);
       } else {
-          // If backend returns empty (e.g. initial load), keep mock or empty?
-          // User wants real data, so let's show empty or cached if available.
-          // For now, if 0, maybe fallback to MOCK if dev environment?
-          // But user said "everything stored there".
-          // Let's assume if 0 matches, it's 0 matches.
-          // Unless we want to keep MOCK as fallback for demo purposes if backend is empty.
-          // The user complained about missing data, so showing MOCKs might be confusing if they differ from DB.
-          // Let's stick to backend data.
-          setMatches(data);
+        setMatches(data);
       }
     } catch (error) {
       console.error('❌ Erro ao carregar jogos:', error);
@@ -110,7 +101,6 @@ const App: React.FC = () => {
       setIsLoading(false);
     }
   };
-
 
   const handleNavigate = (screen: AppScreen, data?: any) => {
     if (screen === 'MATCH_DETAIL' && data) setSelectedMatch(data);
