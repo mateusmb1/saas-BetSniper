@@ -16,8 +16,16 @@ import Profile from './screens/Profile';
 import BottomNav from './components/BottomNav';
 import Plans from './screens/Plans';
 
-// Configuração: true = usar backend real, false = usar dados MOCK
-const USE_BACKEND = true;
+// ========================================
+// CONFIGURAÇÃO DE PRODUÇÃO (VERCEL)
+// ========================================
+
+// Verifica se estamos em produção (Vercel)
+const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+
+// Em produção, NÃO usa backend local (não existe em Vercel)
+// Usa apenas dados MOCK por enquanto (ou mude para false se tiver backend separado)
+const USE_BACKEND = false && !isProduction;
 
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('LANDING');
@@ -29,6 +37,8 @@ const App: React.FC = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [simulatorInitialData, setSimulatorInitialData] = useState<{ odd: number, prob: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  console.log('🚀 App iniciada', { isProduction, USE_BACKEND });
 
   // Check auth on mount
   useEffect(() => {
@@ -49,39 +59,30 @@ const App: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Carregar dados do backend
+  // Carregar dados (MOCK ou backend)
   useEffect(() => {
-    if (USE_BACKEND) {
+    if (USE_BACKEND && userId) {
       loadMatchesFromBackend();
-      
-      if (userId) {
-        loadUserData(userId);
-      }
-
-      const ws = apiClient.connectWebSocket((updatedMatches) => {
-        console.log('📡 Dados atualizados via WebSocket:', updatedMatches.length, 'jogos');
-        setMatches(updatedMatches);
-      });
-
-      return () => ws.close();
+      loadUserData(userId);
     } else {
+      // Em produção, usa dados MOCK diretamente
       setMatches(MOCK_MATCHES);
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [userId, USE_BACKEND]);
 
   const loadUserData = async (uid: string) => {
-      try {
-        const [historyData, notificationsData] = await Promise.all([
-          apiClient.getHistory(uid),
-          apiClient.getNotifications(uid)
-        ]);
+    try {
+      const [historyData, notificationsData] = await Promise.all([
+        apiClient.getHistory(uid),
+        apiClient.getNotifications(uid)
+      ]);
 
-        if (historyData && historyData.length > 0) setHistory(historyData);
-        if (notificationsData && notificationsData.length > 0) setNotifications(notificationsData);
-      } catch (error) {
-        console.error('Error loading user data:', error);
-      }
+      if (historyData && historyData.length > 0) setHistory(historyData);
+      if (notificationsData && notificationsData.length > 0) setNotifications(notificationsData);
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
   };
 
   const loadMatchesFromBackend = async () => {
@@ -112,11 +113,11 @@ const App: React.FC = () => {
   const renderScreen = () => {
     if (isLoading) {
       return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'white' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#102217', color: 'white' }}>
           <div>
-            <div>🔄 Carregando...</div>
+            <div style={{ fontSize: '24px', marginBottom: '16px' }}>🔄 Carregando...</div>
             <div style={{ fontSize: '12px', marginTop: '8px' }}>
-              {USE_BACKEND ? 'Conectando ao backend...' : 'Carregando dados...'}
+              {isProduction ? 'BetSniper - Análise Esportiva' : 'Conectando ao backend...'}
             </div>
           </div>
         </div>
