@@ -1,114 +1,143 @@
 /**
- * API Client - Integração com Backend
+ * API Client - BetSniper com Supabase Realtime
  */
 
-const API_BASE_URL = 'http://localhost:3001/api';
+import { supabase } from './supabase';
+
+const API_MODE = import.meta.env.VITE_API_MODE || 'supabase';
 
 export const apiClient = {
     /**
-     * Buscar todos os jogos
+     * Buscar todos os jogos do Supabase
      */
     async getMatches() {
-        const response = await fetch(`${API_BASE_URL}/matches`);
-        const data = await response.json();
-        return data.success ? data.data : [];
+        if (API_MODE === 'mock') {
+            return [];
+        }
+
+        try {
+            const { data, error } = await supabase
+                .from('matches')
+                .select('*')
+                .order('date', { ascending: true })
+                .order('time', { ascending: true });
+
+            if (error) {
+                console.error('❌ Erro ao buscar jogos:', error);
+                return [];
+            }
+
+            return data || [];
+        } catch (error) {
+            console.error('❌ Exceção ao buscar jogos:', error);
+            return [];
+        }
     },
 
     /**
-     * Forçar atualização de jogos do dia
+     * Forçar atualização de jogos
      */
     async refreshMatches() {
-        const response = await fetch(`${API_BASE_URL}/matches/refresh`, {
-            method: 'POST'
-        });
-        const data = await response.json();
-        return data.success ? data.data : [];
+        try {
+            const { data, error } = await supabase
+                .functions.invoke('refresh-matches', {
+                    method: 'POST'
+                });
+
+            if (error) {
+                console.error('❌ Erro ao atualizar jogos:', error);
+                return [];
+            }
+
+            return data?.matches || [];
+        } catch (error) {
+            console.error('❌ Exceção ao atualizar jogos:', error);
+            return [];
+        }
     },
 
     /**
-     * Forçar atualização de jogos ao vivo
+     * Buscar histórico de apostas
      */
-    async updateLive() {
-        const response = await fetch(`${API_BASE_URL}/matches/update-live`, {
-            method: 'POST'
-        });
-        const data = await response.json();
-        return data.success ? data.data : [];
+    async getHistory(userId: string) {
+        try {
+            const { data, error } = await supabase
+                .from('bet_history')
+                .select('*')
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('❌ Erro ao buscar histórico:', error);
+                return [];
+            }
+
+            return data || [];
+        } catch (error) {
+            console.error('❌ Exceção ao buscar histórico:', error);
+            return [];
+        }
     },
 
     /**
-     * Conectar WebSocket para atualizações em tempo real
+     * Buscar notificações
+     */
+    async getNotifications(userId: string) {
+        try {
+            const { data, error } = await supabase
+                .from('notifications')
+                .select('*')
+                .eq('user_id', userId)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error('❌ Erro ao buscar notificações:', error);
+                return [];
+            }
+
+            return data || [];
+        } catch (error) {
+            console.error('❌ Exceção ao buscar notificações:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Conectar Supabase Realtime para atualizações em tempo real
+     */
+    connectRealtime(onUpdate: (matches: any[]) => void) {
+        if (API_MODE === 'mock') {
+            return { unsubscribe: () => {} };
+        }
+
+        const channel = supabase
+            .channel('matches_changes')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'matches'
+                },
+                (payload) => {
+                    console.log('📡 Mudança detectada:', payload.eventType);
+                    // Recarregar dados
+                    this.getMatches().then(onUpdate);
+                }
+            )
+            .subscribe();
+
+        return {
+            unsubscribe: () => {
+                supabase.removeChannel(channel);
+            }
+        };
+    },
+
+    /**
+     * WebSocket Simulation para compatibilidade
      */
     connectWebSocket(onUpdate: (data: any[]) => void) {
-        let reconnectAttempts = 0;
-        const maxReconnectAttempts = 5;
-        const baseDelay = 1000;
-        let ws: WebSocket | null = null;
-        let reconnectTimeout: NodeJS.Timeout | null = null;
-        let isIntentionallyClosed = false;
-
-        const connect = () => {
-            if (isIntentionallyClosed) return;
-
-            try {
-                ws = new WebSocket('ws://localhost:3001');
-
-                ws.onopen = () => {
-                    console.log('🔌 WebSocket conectado');
-                    reconnectAttempts = 0; // Reset on successful connection
-                };
-
-                ws.onmessage = (event) => {
-                    try {
-                        const message = JSON.parse(event.data);
-                        if (message.type === 'matches_update' || message.type === 'initial_data') {
-                            onUpdate(message.data);
-                        }
-                    } catch (error) {
-                        console.error('❌ Erro ao parsear mensagem WebSocket:', error);
-                    }
-                };
-
-                ws.onerror = (error) => {
-                    console.error('❌ Erro WebSocket:', error);
-                };
-
-                ws.onclose = (event) => {
-                    console.log('🔌 WebSocket desconectado');
-                    ws = null;
-
-                    // Only reconnect if not intentionally closed and under retry limit
-                    if (!isIntentionallyClosed && reconnectAttempts < maxReconnectAttempts) {
-                        const delay = Math.min(baseDelay * Math.pow(2, reconnectAttempts), 30000);
-                        reconnectAttempts++;
-
-                        console.log(`🔄 Tentando reconectar em ${delay}ms (tentativa ${reconnectAttempts}/${maxReconnectAttempts})`);
-
-                        reconnectTimeout = setTimeout(() => {
-                            connect();
-                        }, delay);
-                    } else if (reconnectAttempts >= maxReconnectAttempts) {
-                        console.error('❌ Máximo de tentativas de reconexão atingido');
-                    }
-                };
-            } catch (error) {
-                console.error('❌ Erro ao criar WebSocket:', error);
-            }
-        };
-
-        connect();
-
-        // Return object with close method to cleanup
-        return {
-            close: () => {
-                isIntentionallyClosed = true;
-                if (reconnectTimeout) {
-                    clearTimeout(reconnectTimeout);
-                }
-                if (ws) {
-                    ws.close();
-                }
-            }
-        };
+        return this.connectRealtime(onUpdate);
     }
 };
