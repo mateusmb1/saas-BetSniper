@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { AppScreen, Match, Notification, BetHistoryItem } from './types';
 import { MOCK_MATCHES, MOCK_NOTIFICATIONS, MOCK_HISTORY } from './constants';
 import { apiClient } from './services/apiClient';
+import { supabase } from './services/supabase';
 import Onboarding from './screens/Onboarding';
 import Login from './screens/Login';
 import Dashboard from './screens/Dashboard';
@@ -14,48 +15,70 @@ import Notifications from './screens/Notifications';
 import Profile from './screens/Profile';
 import BottomNav from './components/BottomNav';
 
-// Configuração: true = usar backend real, false = usar dados MOCK
-const USE_BACKEND = true;
-
 const App: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('ONBOARDING');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   const [matches, setMatches] = useState<Match[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
-  const [history] = useState<BetHistoryItem[]>(MOCK_HISTORY);
+  const [history, setHistory] = useState<BetHistoryItem[]>(MOCK_HISTORY);
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [simulatorInitialData, setSimulatorInitialData] = useState<{ odd: number, prob: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Carregar dados do backend ou MOCK
+  console.log('🚀 BetSniper App iniciada - Supabase Mode');
+
   useEffect(() => {
-    if (USE_BACKEND) {
-      // Carregar dados iniciais do backend
-      loadMatchesFromBackend();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setIsAuthenticated(true);
+        setUserId(session.user.id);
+        setCurrentScreen('DASHBOARD');
+      }
+    });
 
-      // Conectar WebSocket para atualizações em tempo real
-      const ws = apiClient.connectWebSocket((updatedMatches) => {
-        console.log('📡 Dados atualizados via WebSocket:', updatedMatches.length, 'jogos');
-        setMatches(updatedMatches);
-      });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+      setUserId(session?.user.id || null);
+      if (!session) setCurrentScreen('LOGIN');
+    });
 
-      return () => ws.close();
-    } else {
-      // Usar dados MOCK
-      setMatches(MOCK_MATCHES);
-      setIsLoading(false);
-    }
+    return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      loadMatchesFromBackend();
+      loadUserData(userId);
+    }
+  }, [userId]);
+
+  const loadUserData = async (uid: string) => {
+    try {
+      const [historyData, notificationsData] = await Promise.all([
+        apiClient.getHistory(uid),
+        apiClient.getNotifications(uid)
+      ]);
+
+      if (historyData && historyData.length > 0) setHistory(historyData);
+      if (notificationsData && notificationsData.length > 0) setNotifications(notificationsData);
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  };
 
   const loadMatchesFromBackend = async () => {
     try {
-      console.log('🔄 Carregando jogos do backend...');
+      console.log('🔄 Carregando jogos do Supabase...');
       const data = await apiClient.getMatches();
       console.log('✅ Jogos carregados:', data.length);
-      setMatches(data);
+      if (data.length > 0) {
+        setMatches(data);
+      } else {
+        setMatches(MOCK_MATCHES);
+      }
     } catch (error) {
       console.error('❌ Erro ao carregar jogos:', error);
-      // Fallback para MOCK se falhar
       setMatches(MOCK_MATCHES);
     } finally {
       setIsLoading(false);
@@ -79,11 +102,11 @@ const App: React.FC = () => {
   const renderScreen = () => {
     if (isLoading) {
       return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: 'white' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#102217', color: 'white' }}>
           <div>
-            <div>🔄 Carregando...</div>
+            <div style={{ fontSize: '24px', marginBottom: '16px' }}>🔄 Carregando...</div>
             <div style={{ fontSize: '12px', marginTop: '8px' }}>
-              {USE_BACKEND ? 'Conectando ao backend...' : 'Carregando dados...'}
+              BetSniper - Conectando ao Supabase...
             </div>
           </div>
         </div>
