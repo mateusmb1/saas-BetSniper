@@ -1,0 +1,35 @@
+# 📅 Cronograma de Implementação e QA
+
+---
+
+## Fase 1: Preparação (Dias 1-2)
+- [ ] Definir identidade visual (Logo, Paleta de cores baseada no Dashboard dark mode).
+- [ ] Criar contas no Stripe (Configurar produtos BRL e EUR).
+- [ ] Escrever copy final para BR e EU.
+- [ ] Gerar assets visuais (Screenshots do app, GIFs de "Gols ao vivo").
+
+## Fase 2: Desenvolvimento Google Sites (Dias 3-4)
+- [ ] Criar estrutura de páginas (/home, /br, /eu).
+- [ ] Implementar Hero Section e Copy.
+- [ ] Inserir Embeds de Preços/Botões de Checkout.
+- [ ] Configurar domínio DNS.
+
+## Fase 3: Validação e QA (Dia 5)
+### Checklist de Qualidade (QA)
+1.  **Teste de Links:** Clicar em TODOS os botões de compra. Verificar se o valor no checkout bate com a página.
+2.  **Mobile Check:** Abrir em Android e iOS. Verificar tamanhos de fonte e alinhamento.
+3.  **Teste de Moeda:** Simular compra com VPN (ou aba anônima) para garantir que o fluxo BR vai para checkout BRL e EU para EUR.
+4.  **Velocidade:** Rodar PageSpeed Insights (Meta: >90 no Mobile).
+
+## Fase 4: Lançamento (Dia 6+)
+- [ ] Ativar campanhas de tráfego.
+- [ ] Monitorar Hotjar/Clarity (Mapa de calor) para ver onde usuários clicam.
+- [ ] **Teste A/B Manual:** Após 1 semana, testar mudar a Headline principal e comparar conversão.
+
+---
+
+## Critérios de "Pronto para Produção"
+*   [ ] Página carrega em menos de 2 segundos.
+*   [ ] Checkout abre corretamente nas duas moedas.
+*   [ ] Termos de Uso e Política de Privacidade acessíveis no rodapé.
+*   [ ] Pixel do Facebook disparando evento "ViewContent".

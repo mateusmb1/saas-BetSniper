@@ -25,9 +25,11 @@ const App: React.FC = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
   const [simulatorInitialData, setSimulatorInitialData] = useState<{ odd: number, prob: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  console.log('🚀 BetSniper App iniciada - Supabase Mode');
+  console.log('🚀 BetSniper App iniciada');
 
+  // Auth state change listener
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
@@ -46,45 +48,33 @@ const App: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Load matches with fallback
   useEffect(() => {
-    if (userId) {
-      loadMatchesFromBackend();
-      loadUserData(userId);
-    }
-  }, [userId]);
-
-  const loadUserData = async (uid: string) => {
-    try {
-      const [historyData, notificationsData] = await Promise.all([
-        apiClient.getHistory(uid),
-        apiClient.getNotifications(uid)
-      ]);
-
-      if (historyData && historyData.length > 0) setHistory(historyData);
-      if (notificationsData && notificationsData.length > 0) setNotifications(notificationsData);
-    } catch (error) {
-      console.error('Error loading user data:', error);
-    }
-  };
-
-  const loadMatchesFromBackend = async () => {
-    try {
-      console.log('🔄 Carregando jogos do Supabase...');
-      const data = await apiClient.getMatches();
-      console.log('✅ Jogos carregados:', data.length);
-      if (data.length > 0) {
-        setMatches(data);
-      } else {
+    const loadData = async () => {
+      try {
+        setError(null);
+        const data = await apiClient.getMatches();
+        
+        if (data && data.length > 0) {
+          setMatches(data);
+          console.log('✅ Dados carregados do Supabase:', data.length, 'jogos');
+        } else {
+          console.log('⚠️ Nenhum dado do Supabase, usando MOCK');
+          setMatches(MOCK_MATCHES);
+        }
+      } catch (err) {
+        console.error('❌ Erro ao carregar dados:', err);
+        setError('Erro de conexão. Usando dados offline.');
         setMatches(MOCK_MATCHES);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('❌ Erro ao carregar jogos:', error);
-      setMatches(MOCK_MATCHES);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    };
 
+    loadData();
+  }, []);
+
+  // Check localStorage for previous auth
   useEffect(() => {
     const hasSeen = localStorage.getItem('hasSeenOnboarding');
     const auth = localStorage.getItem('isAuth');
@@ -102,13 +92,18 @@ const App: React.FC = () => {
   const renderScreen = () => {
     if (isLoading) {
       return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#102217', color: 'white' }}>
-          <div>
-            <div style={{ fontSize: '24px', marginBottom: '16px' }}>🔄 Carregando...</div>
-            <div style={{ fontSize: '12px', marginTop: '8px' }}>
-              BetSniper - Conectando ao Supabase...
-            </div>
-          </div>
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh', 
+          backgroundColor: '#102217', 
+          color: 'white' 
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚽</div>
+          <div style={{ fontSize: '24px', marginBottom: '10px' }}>BetSniper</div>
+          <div style={{ fontSize: '14px', color: '#2bee79' }}>Carregando dados...</div>
         </div>
       );
     }
@@ -121,16 +116,45 @@ const App: React.FC = () => {
     };
 
     switch (currentScreen) {
-      case 'ONBOARDING': return <Onboarding onComplete={() => { localStorage.setItem('hasSeenOnboarding', 'true'); setCurrentScreen('LOGIN'); }} />;
-      case 'LOGIN': return <Login onLogin={() => { setIsAuthenticated(true); localStorage.setItem('isAuth', 'true'); setCurrentScreen('DASHBOARD'); }} />;
-      case 'DASHBOARD': return <Dashboard {...props} />;
-      case 'MATCH_DETAIL': return <MatchDetail match={selectedMatch} onBack={() => handleNavigate('DASHBOARD')} />;
-      case 'HISTORY': return <History historyItems={history} />;
-      case 'SIMULATOR': return <Simulator initialData={simulatorInitialData} />;
-      case 'RANKING': return <Ranking matches={matches} onSimulate={(data) => handleNavigate('SIMULATOR', data)} />;
-      case 'NOTIFICATIONS': return <Notifications notifications={notifications} onMarkRead={(id) => setNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n))} onMarkAllRead={() => setNotifications(prev => prev.map(n => ({ ...n, unread: false })))} onBack={() => handleNavigate('DASHBOARD')} />;
-      case 'PROFILE': return <Profile onBack={() => handleNavigate('DASHBOARD')} onLogout={() => { setIsAuthenticated(false); localStorage.removeItem('isAuth'); setCurrentScreen('LOGIN'); }} />;
-      default: return <Dashboard {...props} />;
+      case 'ONBOARDING': 
+        return <Onboarding onComplete={() => { 
+          localStorage.setItem('hasSeenOnboarding', 'true'); 
+          setCurrentScreen('LOGIN'); 
+        }} />;
+      case 'LOGIN': 
+        return <Login onLogin={() => { 
+          setIsAuthenticated(true); 
+          localStorage.setItem('isAuth', 'true'); 
+          setCurrentScreen('DASHBOARD'); 
+        }} />;
+      case 'DASHBOARD': 
+        return <Dashboard {...props} />;
+      case 'MATCH_DETAIL': 
+        return <MatchDetail match={selectedMatch} onBack={() => handleNavigate('DASHBOARD')} />;
+      case 'HISTORY': 
+        return <History historyItems={history} />;
+      case 'SIMULATOR': 
+        return <Simulator initialData={simulatorInitialData} />;
+      case 'RANKING': 
+        return <Ranking matches={matches} onSimulate={(data) => handleNavigate('SIMULATOR', data)} />;
+      case 'NOTIFICATIONS': 
+        return <Notifications 
+          notifications={notifications} 
+          onMarkRead={(id) => setNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n))} 
+          onMarkAllRead={() => setNotifications(prev => prev.map(n => ({ ...n, unread: false })))} 
+          onBack={() => handleNavigate('DASHBOARD')} 
+        />;
+      case 'PROFILE': 
+        return <Profile 
+          onBack={() => handleNavigate('DASHBOARD')} 
+          onLogout={() => { 
+            setIsAuthenticated(false); 
+            localStorage.removeItem('isAuth'); 
+            setCurrentScreen('LOGIN'); 
+          }} 
+        />;
+      default: 
+        return <Dashboard {...props} />;
     }
   };
 
